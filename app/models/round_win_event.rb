@@ -1,0 +1,2 @@
+class RoundWinEvent < MatchEvent
+end

@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  log_path: MyString
+  start_time: 2015-05-16 14:50:41
+
+two:
+  log_path: MyString
+  start_time: 2015-05-16 14:50:41

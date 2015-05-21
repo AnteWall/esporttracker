@@ -1,0 +1,265 @@
+// Place all the styles related to the match controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+$ct-color: #9fcdfa;
+$t-color: #b5aa62;
+@media (min-width:1080px){
+  .match{
+    width:960px;
+    margin:auto;
+
+    .kill-box{
+      width:100%;
+      margin:0!important;
+    } 
+    .match-header{
+      .match-info{
+        font-size:0.4em!important;
+      }
+      .match-stats{
+        p{
+          font-size:1.2em!important;
+        }
+      }
+      .score{
+        p{ font-size: 3em!important; }
+      }
+    }
+    .players ul{
+      width:300px!important;
+      li{
+        &.dead{
+          &:after{
+            margin: -60px 0 0 -15px!important;
+          }
+        }
+        p{
+          font-size:1em!important;
+          margin: 0 0 30px 0!important;
+          -webkit-text-stroke-width: 1px!important;
+        }
+      }
+    }
+    ul.kills{
+      li{
+        p{
+          font-size:1em!important;
+        }
+        img{
+          margin-top: 0.5em!important;
+          height:1.2em!important;
+        }
+      }
+    }
+
+  }
+}
+
+.match {
+  margin:auto;
+  text-align:center;
+  .match-header{
+    background-color: #37444d;
+    padding:12px;
+    position:relative;
+    .match-info{
+      position:absolute;
+      top:0px;
+      left:12px;
+      p{
+        font-size:2em;
+        &.map{
+          text-align:left;
+        }
+      }
+    }
+    .match-stats{
+      p{
+        margin:5px 0;
+        font-size: 3em;
+        font-weight:bold;
+        &.time{
+
+        }
+        &.rounds{
+          font-weight:normal;
+        }
+      }
+    }
+    .score{
+      p{
+        padding: 0 10px;
+        color:white;
+        margin: 10px 0;
+        font-size:6em;
+        font-weight:bold;
+        display:inline-block;
+        &.ct-score{
+          color: $ct-color;
+        }
+        &.t-score{
+          color: $t-color;
+        }
+      }
+    }
+    .teams{
+      height:100%;
+      img{
+        height:32px;
+        display:inline-block;
+        vertical-align:middle;
+      }
+      .ct-team,
+      .t-team{
+        margin:0 10px;
+        display:inline-block;
+        p{
+          display:inline-block;
+          margin:0 10px;
+          font-size:3em;
+          vertical-align:middle;
+          &.terrorists{
+            color: $t-color;
+          }
+          &.cterrorist{
+            color: $ct-color;
+          }
+        }
+      }
+    }
+
+  }
+  .de_dust2{
+    background-image: image-url('maps/dust_2.png');
+    background-size: cover;
+    background-position:bottom;
+  }
+  .de_cache{
+    background-image: image-url('maps/cache.png');
+    background-size: cover;
+    background-position:bottom;
+  }  
+  .players{
+    ul{
+      width:48%;
+      padding:0;
+      margin:0;
+      list-style:none;
+      &.left{
+        float:left;
+      }
+      &.right{
+        float:right;
+        p{
+          text-align:right!important;
+        }
+      }
+      li{
+        background-color: #464646;
+        padding:5px;
+        margin: 5px 0;
+        position:relative;
+        &.dead{
+          p{
+            -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; // IE8
+            filter: alpha(opacity=30); // IE 5-7
+            opacity: 0.3;
+          }
+          &:after{
+            content: image-url('dead_icon.png');
+            position:absolute;
+            margin-top: -80px;
+          }
+        }
+        p{
+          color:black;
+          text-align:left;
+          margin:0 0 60px 0;
+          font-size:2em;
+          padding:5px;
+          &.ct{
+            background-color: $ct-color;
+          }
+          &.t{
+            background-color: $t-color;
+          }
+        }
+      }
+    }
+  }
+
+  .kill-box{
+    background-color: #464646;
+    border-radius: 11px 11px 11px 11px;
+    -moz-border-radius: 11px 11px 11px 11px;
+    -webkit-border-radius: 11px 11px 11px 11px;
+    margin: 0 10px;
+    ul.kills{
+      list-style:none;
+      margin: 10px 0;
+      padding: 0;
+      li{
+        -webkit-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+        -moz-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+        -ms-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+        -o-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+        transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+        transition-property: all;
+        transition-duration: .5s;
+        opacity:1;
+        p{
+          width:30%;
+          padding:5px 10px;
+          float:left;
+          font-size:1.5em;
+          vertical-align:middle;
+          &.right{
+            float:right;
+          }
+        }
+        img{
+          padding:1em 0 0 0;
+          height:3em;
+          vertical-align:middle;
+        }
+      }
+    }
+  }
+}
+.animated { 
+  -webkit-animation-duration: 0.5s; 
+  animation-duration: 0.5s; 
+  -webkit-animation-fill-mode: both; 
+  animation-fill-mode: both; 
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+} 
+
+@-webkit-keyframes fadeInDown { 
+  0% { 
+    opacity: 0; 
+    -webkit-transform: translateY(-20px); 
+  } 
+  100% { 
+    opacity: 1; 
+    -webkit-transform: translateY(0); 
+  } 
+} 
+
+@keyframes fadeInDown { 
+  0% { 
+    opacity: 0; 
+    transform: translateY(-20px); 
+  } 
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
+} 
+
+.fadeInDown { 
+  -webkit-animation-name: fadeInDown; 
+  animation-name: fadeInDown; 
+}

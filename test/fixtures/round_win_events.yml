@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ct_win: false
+  t_win: false
+
+two:
+  ct_win: false
+  t_win: false

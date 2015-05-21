@@ -1,0 +1,56 @@
+
+<div class="match" ng-controller="MatchCtrl" ng-init="initialize('<%= @match.id %>')">
+  <button ng-click="debug_next()">NEDAIDSA</button>
+  <div ng-class="get_header_style()">
+    <div class="match-info">
+      <p class="map">Map: {{ matchinfo.map }}</p>
+    </div>
+    <div class="match-stats">
+      <p class="time">~{{ get_time_minutes() }}:{{ round_time % 60 | digits }}</p>
+      <p class="rounds">Round: {{get_round()}}/30</p>
+    </div>
+    <div class="score">
+      <p class="ct-score">{{ get_ct_team().score }}</p>
+      <p>-</p>
+      <p class="t-score">{{ get_t_team().score }}</p>
+    </div>
+    <div class="teams">
+      <div class="ct-team">
+        <p class="cterrorist">{{ get_ct_team().name }}  </p>
+        <%= image_tag('flags/sweden.gif') %>
+      </div>
+      <div class="t-team">
+        <%= image_tag('flags/sweden.gif') %>
+        <p class="terrorists">{{ get_t_team().name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearbox"></div>
+
+  <div class="players">
+
+    <ul class="players-list left">
+      <li ng-repeat="ct in counter_terrorists" ng-class="playerStyle(ct)">
+      <p class="ct">{{ct.name}}</p>
+      </li>
+    </ul>
+    <ul class="players-list right">
+      <li ng-repeat="t in terrorists" ng-class="playerStyle(t)">
+      <p class="t">{{t.name}}</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="clearbox"></div>
+  <div class="kill-box">
+    <ul class="kills">
+      <li ng-repeat="event in killbox" class="animated fadeInDown">
+      <p> {{event.player}} </p>
+      <%= image_tag('guns/m4a4_silencer.png') %>
+      <p class="right"> asdsads {{event.killed}} </p>
+      <div class="clearbox"></div>
+      </li>
+    </ul>
+  </div>
+</div>
