@@ -143,7 +143,12 @@ $t-color: #b5aa62;
     background-image: image-url('maps/cache.png');
     background-size: cover;
     background-position:bottom;
-  }  
+  }
+  .de_mirage{
+    background-image: image-url('maps/de_mirage.png');
+    background-size: cover;
+    background-position:center;
+  }
   .players{
     ul{
       width:48%;
