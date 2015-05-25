@@ -85,7 +85,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
 
     $scope.getEndTimeTimeline = function(){
         if($scope.game_over){
-            return $filter('date')($scope.current_time, 'HH:mm:ss');
+            return $filter('date')($scope.end_time, 'HH:mm:ss');
         }
         return 'Live';
     };
@@ -339,7 +339,14 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 $scope.game_over = true;
             }
         }
-        $scope.end_time = new Date(get_time(events[events.length - 2].log));
+        for(var i = events.length; i > 0; i--){
+            if(events[i] == undefined || events[i].log == undefined) continue;
+            var time = get_time(events[i].log);
+            if(time != null){
+                $scope.end_time = new Date(get_time(events[i].log));
+                break;
+            }
+        }
         if($scope.current_time == undefined) set_start_time();
     }
 
