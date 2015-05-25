@@ -1,3 +1,83 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$ct-color: #9fcdfa;
+$t-color: #b5aa62;        
+
+.game{
+  padding: 40px;
+  background-size: cover;
+  h2{
+    text-transform: uppercase;
+    font-size: 3em;
+    background-color: rgba(0,0,0,.8);
+    padding: 20px;
+    display: inline-block;
+  }
+  &.csgo{
+    background-position: bottom center;
+    background-image: image-url('games/csgo/bg.jpg');
+  }
+}
+
+ul.overviews {
+  list-style: none;
+  margin: 10px 0;
+  li.match-overview {
+    position: relative;
+    a{
+      position: absolute;
+      top:20px;
+      left:0;
+      width: 100%;
+      height: 100%;
+    }
+    background-position: center;
+    background-image: image-url('maps/dust_2.png');
+    background-size: cover;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    width: 50%;
+    padding: 40px 0;
+    -webkit-box-shadow:  0 0 5px black;
+    -moz-box-shadow:  0 0 5px black;
+    box-shadow:  0 0 5px black;
+    &:hover{
+      background-image: image-url('maps/dust_2.jpg');
+    }
+    p{
+      text-align: center;
+      vertical-align: middle;
+      &.team-1{
+        color: $ct-color;
+        float:left;
+        font-size: 1.3em;
+        font-weight: bold;
+        width: 33.3%;
+      }
+      &.team-2{
+        float:right;
+        width: 33.3%;
+        font-size: 1.3em;
+        color: $t-color;
+        font-weight: bold;
+      }
+      &.versus{
+        display: inline-block;
+        width: 33.3%;
+        font-weight: bold;
+        font-size: 1.3em;
+      }
+    }
+    .score{
+      margin-top: 10px;
+      font-size: 2em;
+    }
+  }
+}
+@media (max-width: 1080px) {
+  li.match-overview {
+    width: 100%!important;
+  }
+}

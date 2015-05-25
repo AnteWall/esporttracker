@@ -134,6 +134,11 @@ $t-color: #b5aa62;
     background-size: cover;
     background-position:bottom;
   }
+  .de_train{
+    background-image: image-url('maps/de_train.png');
+    background-size: cover;
+    background-position:center;
+  }
   .de_cache{
     background-image: image-url('maps/cache.png');
     background-size: cover;
@@ -223,6 +228,32 @@ $t-color: #b5aa62;
           vertical-align:middle;
         }
       }
+    }
+  }
+  .timeline{
+    position: relative;
+    p{
+      font-size: 2em;
+      margin:2em 0;
+      display: inline-block;
+      &.start-time{
+        float:left;
+      }
+      &.end-time{
+        float:right;
+      }
+    }
+    .line{
+      position: absolute;
+      top:10px;
+      left: 0;
+      height: 2em;
+      width: 100%;
+      background-color: black;
+    }
+    .played-timeline{
+      background-color: red;
+      width: 30%;
     }
   }
 }

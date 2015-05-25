@@ -1,9 +1,11 @@
 
 <div class="match" ng-controller="MatchCtrl" ng-init="initialize('<%= @match.id %>')">
-  <button ng-click="debug_next()">NEDAIDSA</button>
   <div ng-class="get_header_style()">
     <div class="match-info">
       <p class="map">Map: {{ matchinfo.map }}</p>
+        <p>Current time: {{ current_time | date : 'HH:mm:ss' }}</p>
+        <p>End time: {{ end_time | date : 'HH:mm:ss' }}</p>
+
     </div>
     <div class="match-stats">
       <p class="time">~{{ get_time_minutes() }}:{{ round_time % 60 | digits }}</p>
@@ -16,8 +18,7 @@
     </div>
     <div class="teams">
       <div class="ct-team">
-        <p class="cterrorist">{{ get_ct_team().name }}  </p>
-        <%= image_tag('flags/sweden.gif') %>
+        <p class="cterrorist">{{ get_ct_team().name }}  </p> <%= image_tag('flags/sweden.gif') %>
       </div>
       <div class="t-team">
         <%= image_tag('flags/sweden.gif') %>
@@ -27,6 +28,17 @@
   </div>
 
   <div class="clearbox"></div>
+
+    <div class="timeline">
+        <div class="line"></div>
+        <div class="line played-timeline" ng-style="getTimelineElapsed()"></div>
+
+        <div class="current-time"></div>
+        <p class="start-time">{{ start_time | date : 'HH:mm:ss' }}</p>
+
+        <p class="end-time">{{ end_time | date : 'HH:mm:ss' }}</p>
+    </div>
+    <div class="clearbox"></div>
 
   <div class="players">
 
@@ -47,7 +59,8 @@
     <ul class="kills">
       <li ng-repeat="event in killbox" class="animated fadeInDown">
       <p> {{event.player}} </p>
-      <%= image_tag('guns/m4a4_silencer.png') %>
+          <p> {{ event.weapon }}</p>
+      <%#= image_tag('guns/m4a4_silencer.png') %>
       <p class="right"> asdsads {{event.killed}} </p>
       <div class="clearbox"></div>
       </li>

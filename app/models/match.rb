@@ -1,5 +1,5 @@
 class Match < ActiveRecord::Base
-  has_many :match_events
+  has_many :match_events, :dependent => :destroy
   
   scope :events, ->(last) { includes(:match_events) }
   scope :finished, -> { where(status: 'finished') }

@@ -8,8 +8,17 @@
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
 </head>
 <body ng-app="esporttracker">
+<div class="container">
+    <nav class="navigation">
+        <p class="logo">ESPORT TRACKER</p>
+        <ul>
+            <li><%= link_to 'Home',root_path %></li>
+            <li>About</li>
+        </ul>
+    </nav>
+    <%= yield %>
+</div>
 
-<%= yield %>
 
 </body>
 </html>
