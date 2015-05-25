@@ -146,6 +146,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         var reg = /- Loading maps (\w+)/;
         var matches = log.match(reg);
         $scope.matchinfo.map = matches[1];
+        $scope.counter_terrorists = [];
+        $scope.terrorists = [];
     }
 
     function end_game(log){

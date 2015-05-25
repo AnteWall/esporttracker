@@ -36,7 +36,7 @@
         <div class="current-time"></div>
         <p class="start-time">{{ start_time | date : 'HH:mm:ss' }}</p>
 
-        <p class="end-time">{{ end_time | date : 'HH:mm:ss' }}</p>
+        <p class="end-time">{{ getEndTimeTimeline() }}</p>
     </div>
     <div class="clearbox"></div>
 
@@ -61,7 +61,7 @@
       <p> {{event.player}} </p>
           <p> {{ event.weapon }}</p>
       <%#= image_tag('guns/m4a4_silencer.png') %>
-      <p class="right"> asdsads {{event.killed}} </p>
+      <p class="right"> {{event.killed}} </p>
       <div class="clearbox"></div>
       </li>
     </ul>
