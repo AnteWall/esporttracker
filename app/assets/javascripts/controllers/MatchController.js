@@ -123,6 +123,10 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 //console.log("SWAP OR STAY");
                 switch_or_stay(str);
                 break;
+            case /: \.(stay|switch)/.test(str):
+                //console.log("SWAP OR STAY");
+                switch_or_stay(str);
+                break;
             case /- (.+) win ! Final score:/.test(str):
                 //console.log("Match Over");
                 end_game(str);
@@ -327,7 +331,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             if($scope.game_over){
                 pause_timer();
             }
-        },100);
+        },1000);
     }
 
     function load_events(events){
