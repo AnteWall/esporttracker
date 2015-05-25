@@ -119,11 +119,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 //console.log("KNIFE ROUND");
                 knife_round(str);
                 break;
-            case /: !(stay|switch)/.test(str):
-                //console.log("SWAP OR STAY");
-                switch_or_stay(str);
-                break;
-            case /: \.(stay|switch)/.test(str):
+            case /: [!|\.](stay|switch)/.test(str):
                 //console.log("SWAP OR STAY");
                 switch_or_stay(str);
                 break;
@@ -161,7 +157,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function switch_or_stay(log){
-        var reg = /: !(stay|switch)/;
+        var reg = /: [!|\.](stay|switch)/;
         var matches = log.match(reg);
         if(matches[1] == "switch"){
             swap_teams();
@@ -331,7 +327,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             if($scope.game_over){
                 pause_timer();
             }
-        },1000);
+        },100);
     }
 
     function load_events(events){
