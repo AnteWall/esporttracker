@@ -1,69 +1,71 @@
+<div class="row">
+    <div class="column match" ng-controller="MatchCtrl" ng-init="initialize('<%= @match.id %>')">
+        <div class="row" ng-class="get_header_style()">
 
-<div class="match" ng-controller="MatchCtrl" ng-init="initialize('<%= @match.id %>')">
-  <div ng-class="get_header_style()">
-    <div class="match-info">
-      <p class="map">Map: {{ matchinfo.map }}</p>
-        <p>Current time: {{ current_time | date : 'HH:mm:ss' }}</p>
-        <p>End time: {{ end_time | date : 'HH:mm:ss' }}</p>
+            <div class="row match-stats">
+                <!--<p class="time">~{{ get_time_minutes() }}:{{ round_time % 60 | digits }}</p>-->
+                <p class="rounds">Round: {{get_round()}}/30</p>
+            </div>
+            <div class="row score">
+                <div class="small-6 column">
+                    <p class="ct-score">{{ get_ct_team().score }}</p>
+                </div>
+                <div class="small-6 column">
+                    <p class="t-score">{{ get_t_team().score }}</p>
+                </div>
+            </div>
+            <div class="row teams">
+                <div class="small-6 column ct-team">
+                    <p class="cterrorist">{{ get_ct_team().name }} </p>
+                </div>
+                <div class="small-6 column  t-team">
+                    <p class="terrorists">{{ get_t_team().name }}</p>
+                </div>
+            </div>
+        </div>
 
+        <div class="row timeline">
+            <div class="small-6 column ">
+                <div class="progress">
+                    <span class="meter" ng-style="getTimelineElapsed()"></span>
+                </div>
+
+                <div class="current-time"></div>
+                <p class="start-time">{{ start_time | date : 'HH:mm:ss' }}</p>
+
+                <p class="end-time">{{ getEndTimeTimeline() }}</p>
+            </div>
+            <p class="small-3 column">Playback speed:</p>
+            <div class="small-3 column">
+                <select class="small column" ng-model="playback_speed">
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="5">5x</option>
+                    <option value="10">10x</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="players">
+                <ul class="small-6 column players-list">
+                    <li ng-repeat="ct in counter_terrorists" ng-class="playerStyle(ct)">
+                        <p class="ct">{{ct.name}}</p>
+                    </li>
+                </ul>
+                <ul class="small-6 column players-list right">
+                    <li ng-repeat="t in terrorists" ng-class="playerStyle(t)">
+                        <p class="t">{{t.name}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row kill-box" ng-repeat="event in killbox" class="animated fadeInDown">
+            <p class="small-4 column"> {{event.player}} </p>
+            <p class="small-4 column"> {{ event.weapon }}</p>
+            <%#= image_tag('guns/m4a4_silencer.png') %>
+            <p class="small-4 column"> {{event.killed}} </p>
+        </div>
     </div>
-    <div class="match-stats">
-      <p class="time">~{{ get_time_minutes() }}:{{ round_time % 60 | digits }}</p>
-      <p class="rounds">Round: {{get_round()}}/30</p>
-    </div>
-    <div class="score">
-      <p class="ct-score">{{ get_ct_team().score }}</p>
-      <p>-</p>
-      <p class="t-score">{{ get_t_team().score }}</p>
-    </div>
-    <div class="teams">
-      <div class="ct-team">
-        <p class="cterrorist">{{ get_ct_team().name }}  </p> <%= image_tag('flags/sweden.gif') %>
-      </div>
-      <div class="t-team">
-        <%= image_tag('flags/sweden.gif') %>
-        <p class="terrorists">{{ get_t_team().name }}</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="clearbox"></div>
-
-    <div class="timeline">
-        <div class="line"></div>
-        <div class="line played-timeline" ng-style="getTimelineElapsed()"></div>
-
-        <div class="current-time"></div>
-        <p class="start-time">{{ start_time | date : 'HH:mm:ss' }}</p>
-
-        <p class="end-time">{{ getEndTimeTimeline() }}</p>
-    </div>
-    <div class="clearbox"></div>
-
-  <div class="players">
-
-    <ul class="players-list left">
-      <li ng-repeat="ct in counter_terrorists" ng-class="playerStyle(ct)">
-      <p class="ct">{{ct.name}}</p>
-      </li>
-    </ul>
-    <ul class="players-list right">
-      <li ng-repeat="t in terrorists" ng-class="playerStyle(t)">
-      <p class="t">{{t.name}}</p>
-      </li>
-    </ul>
-  </div>
-
-  <div class="clearbox"></div>
-  <div class="kill-box">
-    <ul class="kills">
-      <li ng-repeat="event in killbox" class="animated fadeInDown">
-      <p> {{event.player}} </p>
-          <p> {{ event.weapon }}</p>
-      <%#= image_tag('guns/m4a4_silencer.png') %>
-      <p class="right"> {{event.killed}} </p>
-      <div class="clearbox"></div>
-      </li>
-    </ul>
-  </div>
 </div>

@@ -18,6 +18,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.end_time;
     $scope.timer;
     $scope.game_over = false;
+    $scope.playback_speed = 1;
 
     $scope.initialize = function(match_id){
         $scope.match_id = match_id;
@@ -317,17 +318,14 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function start_timeline_timer(){
-        $scope.timeline_timer_interval = $interval(function () {
-
+        $scope.timeline_timer_interval = $timeout(function () {
             call_log_event($filter('date')($scope.current_time,'yyyy-MM-dd HH:mm:ss'));
-
+            if($scope.game_over) pause_timer();
             if($scope.current_time <= $scope.end_time){
                 $scope.current_time.setSeconds($scope.current_time.getSeconds() + 1);
+                start_timeline_timer();
             }
-            if($scope.game_over){
-                pause_timer();
-            }
-        },100);
+        },(1000/$scope.playback_speed));
     }
 
     function load_events(events){

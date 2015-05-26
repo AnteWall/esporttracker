@@ -3,125 +3,62 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 $ct-color: #9fcdfa;
 $t-color: #b5aa62;
-@media (min-width:1080px){
-  .match{
-    width:960px;
-    margin:auto;
-
-    .kill-box{
-      width:100%;
-      margin:0!important;
-    } 
-    .match-header{
-      .match-info{
-        font-size:0.4em!important;
-      }
-      .match-stats{
-        p{
-          font-size:1.2em!important;
-        }
-      }
-      .score{
-        p{ font-size: 3em!important; }
-      }
-    }
-    .players ul{
-      width:300px!important;
-      li{
-        &.dead{
-          &:after{
-            margin: -60px 0 0 -15px!important;
-          }
-        }
-        p{
-          font-size:1em!important;
-          margin: 0 0 30px 0!important;
-          -webkit-text-stroke-width: 1px!important;
-        }
-      }
-    }
-    ul.kills{
-      li{
-        p{
-          font-size:1em!important;
-        }
-        img{
-          margin-top: 0.5em!important;
-          height:1.2em!important;
-        }
-      }
-    }
-
-  }
-}
 
 .match {
-  margin:auto;
-  text-align:center;
-  .match-header{
+  margin: auto;
+  text-align: center;
+  .match-header {
     background-color: #37444d;
-    padding:12px;
-    position:relative;
-    .match-info{
-      position:absolute;
-      top:0px;
-      left:12px;
-      p{
-        font-size:2em;
-        &.map{
-          text-align:left;
+    padding: 12px;
+    position: relative;
+    .match-info {
+      position: absolute;
+      top: 0px;
+      left: 12px;
+      p {
+        font-size: 2em;
+        &.map {
+          text-align: left;
         }
       }
     }
-    .match-stats{
-      p{
-        margin:5px 0;
-        font-size: 3em;
-        font-weight:bold;
-        &.time{
+    .match-stats {
+      p {
+        margin: 5px 0;
+        font-weight: bold;
+        &.time {
 
         }
-        &.rounds{
-          font-weight:normal;
+        &.rounds {
+          font-weight: normal;
         }
       }
     }
-    .score{
-      p{
-        padding: 0 10px;
-        color:white;
-        margin: 10px 0;
-        font-size:6em;
-        font-weight:bold;
-        display:inline-block;
-        &.ct-score{
+    .score {
+      p {
+        color: white;
+        font-weight: bold;
+        font-size: 2em;
+        &.ct-score {
           color: $ct-color;
         }
-        &.t-score{
+        &.t-score {
           color: $t-color;
         }
       }
     }
-    .teams{
-      height:100%;
-      img{
-        height:32px;
-        display:inline-block;
-        vertical-align:middle;
-      }
+    .teams {
       .ct-team,
-      .t-team{
-        margin:0 10px;
-        display:inline-block;
-        p{
-          display:inline-block;
-          margin:0 10px;
-          font-size:3em;
-          vertical-align:middle;
-          &.terrorists{
+      .t-team {
+        p {
+          display: inline-block;
+          margin: 0 10px;
+          font-size: 2em;
+          vertical-align: middle;
+          &.terrorists {
             color: $t-color;
           }
-          &.cterrorist{
+          &.cterrorist {
             color: $ct-color;
           }
         }
@@ -129,68 +66,67 @@ $t-color: #b5aa62;
     }
 
   }
-  .de_dust2{
+  .de_dust2 {
     background-image: image-url('maps/dust_2.png');
     background-size: cover;
-    background-position:bottom;
+    background-position: bottom;
   }
-  .de_train{
+  .de_train {
     background-image: image-url('maps/de_train.png');
     background-size: cover;
-    background-position:center;
+    background-position: center;
   }
-  .de_cache{
+  .de_cache {
     background-image: image-url('maps/cache.png');
     background-size: cover;
-    background-position:bottom;
+    background-position: bottom;
   }
-  .de_mirage{
+  .de_mirage {
     background-image: image-url('maps/de_mirage.png');
     background-size: cover;
-    background-position:center;
+    background-position: center;
   }
-  .players{
-    ul{
-      width:48%;
-      padding:0;
-      margin:0;
-      list-style:none;
-      &.left{
-        float:left;
+  .players {
+    margin-bottom: 20px;
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      margin-bottom: 20px;
+      &.left {
       }
-      &.right{
-        float:right;
-        p{
-          text-align:right!important;
+      &.right {
+        p {
+          text-align: right !important;
         }
       }
-      li{
+      li {
         background-color: #464646;
-        padding:5px;
-        margin: 5px 0;
-        position:relative;
-        &.dead{
-          p{
-            -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; // IE8
+        padding: 5px;
+        position: relative;
+        &.dead {
+          p {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; // IE8
             filter: alpha(opacity=30); // IE 5-7
             opacity: 0.3;
           }
-          &:after{
-            content: image-url('dead_icon.png');
-            position:absolute;
-            margin-top: -80px;
+          &:after {
+            //content: image-url('dead_icon.png');
+            //position: absolute;
+            //margin-top: -27%;
+            //margin-left: -5%;
           }
         }
-        p{
-          color:black;
-          text-align:left;
-          margin:0 0 60px 0;
-          font-size:2em;
-          padding:5px;
-          &.ct{
+        p {
+          color: black;
+          text-align: left;
+          margin: 0 0 20px 0;
+          font-size: 1em;
+          padding: 5px;
+          &.ct {
             background-color: $ct-color;
           }
-          &.t{
+          &.t {
             background-color: $t-color;
           }
         }
@@ -198,48 +134,30 @@ $t-color: #b5aa62;
     }
   }
 
-  .kill-box{
+  .kill-box {
     background-color: #464646;
-    border-radius: 11px 11px 11px 11px;
-    -moz-border-radius: 11px 11px 11px 11px;
-    -webkit-border-radius: 11px 11px 11px 11px;
-    margin: 0 10px;
-    ul.kills{
-      list-style:none;
-      margin: 10px 0;
-      padding: 0;
-      li{
-        -webkit-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
-        -moz-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
-        -ms-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
-        -o-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
-        transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
-        transition-property: all;
-        transition-duration: .5s;
-        opacity:1;
-        p{
-          width:30%;
-          padding:5px 10px;
-          float:left;
-          font-size:1.5em;
-          vertical-align:middle;
-          &.right{
-            float:right;
-          }
-        }
-        img{
-          padding:1em 0 0 0;
-          height:3em;
-          vertical-align:middle;
-        }
-      }
+    padding: 0;
+    -webkit-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+    -moz-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+    -ms-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+    -o-transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+    transition: 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000) all;
+    transition-property: all;
+    transition-duration: .5s;
+    opacity: 1;
+    p {
+      text-align: center;
+    }
+    img {
+      padding: 1em 0 0 0;
     }
   }
+
   .timeline{
+    padding: 10px;
     position: relative;
     p{
-      font-size: 2em;
-      margin:2em 0;
+      font-size: 1em;
       display: inline-block;
       &.start-time{
         float:left;
@@ -248,17 +166,8 @@ $t-color: #b5aa62;
         float:right;
       }
     }
-    .line{
-      position: absolute;
-      top:10px;
-      left: 0;
-      height: 2em;
-      width: 100%;
-      background-color: black;
-    }
-    .played-timeline{
-      background-color: red;
-      width: 30%;
+    select{
+      display: inline-block;
     }
   }
 }
