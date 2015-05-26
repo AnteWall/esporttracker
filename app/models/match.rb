@@ -3,7 +3,7 @@ class Match < ActiveRecord::Base
   
   scope :events, ->(last) { includes(:match_events) }
   scope :finished, -> { where(status: 'finished') }
-  scope :started, -> { where(status: 'started') }
+  scope :live, -> { where(status: 'started').where.not(team_1: nil).where.not(team_2: nil) }
   def self.types
     [
       RoundWinEvent

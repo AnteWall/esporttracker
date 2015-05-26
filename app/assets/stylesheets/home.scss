@@ -9,6 +9,11 @@ $t-color: #b5aa62;
   font-weight: bold;
   text-align: center;
   position: relative;
+  p.no-live{
+    background-color: #505050;
+    padding: 10px 5px;
+    margin: -10px;
+  }
   a{
     position: absolute;
     top:0;
