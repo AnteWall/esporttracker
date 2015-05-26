@@ -1,0 +1,13 @@
+.map_de_dust2{
+  background: image-url('maps/dust_2.png') center;
+  background-size: cover;
+  &:hover{
+    background: image-url('maps/dust_2.jpg') center;
+    -webkit-webkit-background-size: cover;
+    -moz-webkit-background-size: cover;
+    -ms-webkit-background-size: cover;
+    -o-webkit-background-size: cover;
+    webkit-background-size: cover;;
+    background-size: cover;
+  }
+}

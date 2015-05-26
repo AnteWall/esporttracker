@@ -1,45 +1,50 @@
-<div class="home md-whiteframe-z3">
-    <div class="row">
-        <div class="game csgo">
-            <h2>            <div class="live-dot"></div>
-                <span class="live">Live</span> Games</h2>
+<div class="row">
+    <h3><div class="live-dot"></div> Live Games</h3>
+    <% @matches.finished.each do |match| %>
+        <div class="match-overview large-4 columns map_de_dust2">
+            <%= link_to '', match_path(match), :target => "_self" %>
+            <div class="row">
+
+                <div class="small-4 columns team-1"><%= match.team_1 %></div>
+                <div class="small-4 columns versus">vs</div>
+                <div class="small-4 columns team-2"><%= match.team_2 %></div>
+            </div>
+            <div class="row">
+                <div class="small-4 columns team-1"><%= match.team_1_score %></div>
+                <div class="small-4 columns team-2"><%= match.team_2_score %></div>
+            </div>
+
         </div>
-        <ul class="overviews">
-                <% @matches.each do |match| %>
-                    <li class="match-overview">
-                        <%= link_to match_path(match), :target => "_self" do %>                    <% end %>
+    <% end %>
+</div>
+<div class="row">
+    <h2>Finsihed</h2>
+    <table class="match-overview-table">
+        <thead>
+        <tr>
+            <th>Teams</th>
+            <th width="150">Map</th>
+            <th width="150">Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @matches.finished.each do |match| %>
+            <tr onclick="location.href='<%= match_path(match) %>'">
+                    <td>
                         <p class="team-1"><%= match.team_1 %></p>
                         <p class="versus">vs</p>
                         <p class="team-2"><%= match.team_2 %></p>
-                        <div class="score">
-                            <p class="team-1"><%= match.team_1_score %></p>
-                            <p class="team-2">
-                                <%= match.team_2_score %>
-                            </p>
-                        </div>
-                    </li>
-                <% end %>
-        </ul>
-    </div>
-    <div class="row">
-    <div class="game csgo">
-        <h2>Finished Games</h2>
-    </div>
-        <ul class="overviews">
-            <% @matches.each do |match| %>
-                <li class="match-overview">
-                    <%= link_to match_path(match), :target => "_self" do %>                    <% end %>
-                    <p class="team-1"><%= match.team_1 %></p>
-                        <p class="versus">vs</p>
-                        <p class="team-2"><%= match.team_2 %></p>
-                        <div class="score">
-                            <p class="team-1"><%= match.team_1_score %></p>
-                            <p class="team-2">
-                                <%= match.team_2_score %>
-                            </p>
-                        </div>
-                </li>
-            <% end %>
-        </ul>
-    </div>
+                    </td>
+                    <td><p>de_dust2</p></td>
+                    <td>
+                        <p class="team-1"><%= match.team_1_score %></p>
+                        <p>-</p>
+                        <p class="team-2"><%= match.team_2_score %></p>
+                    </td>
+            </tr>
+        <% end %>
+
+
+        </tbody>
+    </table>
 </div>

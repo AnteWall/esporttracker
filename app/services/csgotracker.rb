@@ -16,7 +16,7 @@ class Csgotracker
   handle_asynchronously :start_tracking
 
   def skip_lines(line)
-    return true if line == '</div>'
+    return true if line == '                    </div>'
     return true if line == '<div id="logmatch">'
     return false
   end

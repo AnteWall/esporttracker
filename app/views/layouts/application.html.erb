@@ -5,19 +5,34 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+  <%= javascript_include_tag "vendor/modernizr" %>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
 </head>
 <body ng-app="esporttracker">
-<div class="container">
-    <nav class="navigation">
-        <p class="logo">ESPORT TRACKER</p>
-        <ul>
-            <li><%= link_to 'Home',root_path %></li>
-            <li>About</li>
+    <nav class="top-bar nav-bar" data-topbar role="navigation">
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="#">LIVECSGO</a></h1>
+            </li>
+            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
         </ul>
+
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+            <ul class="right">
+                <li><%= link_to 'About', root_path %></li>
+            </ul>
+
+            <!-- Left Nav Section -->
+            <ul class="left">
+                <li><%= link_to 'Home', root_path %></li>
+            </ul>
+        </section>
     </nav>
     <%= yield %>
-</div>
 
 
 </body>

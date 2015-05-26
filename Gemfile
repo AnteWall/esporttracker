@@ -22,7 +22,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'rails_admin'
 gem 'angularjs-rails'
-
+gem 'jquery-rails'
 gem 'normalize-rails'
 gem 'nokogiri'
 gem 'delayed_job_active_record'
+gem 'foundation-rails'
