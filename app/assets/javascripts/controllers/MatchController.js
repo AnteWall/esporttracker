@@ -322,13 +322,13 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function set_start_time() {
+        console.log("SETTINGS TART TIME!");
         for(var i = 0; i < $scope.events.length; i++) {
             var ev = $scope.events[i];
             var time = get_time(ev.log);
             if(time != null){
                 $scope.start_time = new Date(time);
                 $scope.current_time = angular.copy($scope.start_time);
-                //DEBUG $scope.current_time.setSeconds($scope.current_time.getSeconds() + 2500);
                 start_timeline_timer();
                 return;
             }
@@ -346,11 +346,28 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         },(1000/$scope.playback_speed));
     }
 
+    var playUntilLog = function (events, log) {
+        for(var i = 0; i < events.length; i++){
+            match_log(events[i].log);
+            if(events[i].log == log){
+                var time = get_time(log);
+                var time = get_time(log);
+                $scope.current_time = new Date(time);
+                break;
+            }
+        }
+    };
+
     function load_events(events){
+        if($scope.current_time == undefined) set_start_time();
         for(var i = 0; i < events.length; i++){
             var ev = events[i];
             addEventToTimeline(ev.log);
             $scope.last_event = ev.id;
+            if(isKnifeRound(ev.log)){
+                console.log("FOUND NIFE!");
+                playUntilLog(events,ev.log);
+            }
             if(isWinEvent(ev.log)){
                 $scope.game_over = true;
             }
@@ -363,12 +380,19 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 break;
             }
         }
-        if($scope.current_time == undefined) set_start_time();
     }
 
     function isWinEvent(log){
         switch(true){
             case /- (.+) win ! Final score:/.test(log):
+                return true;
+                break;
+        }
+        return false;
+    }
+    function isKnifeRound(log){
+        switch(true){
+            case /INFO:.+ (Starting Knife Round)/.test(log):
                 return true;
                 break;
         }
