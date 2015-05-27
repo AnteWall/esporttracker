@@ -19,6 +19,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.timer;
     $scope.game_over = false;
     $scope.playback_speed = 1;
+    $scope.game_status = 'warmup';
 
     $scope.initialize = function(match_id){
         $scope.match_id = match_id;
@@ -97,9 +98,14 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     };
 
     $scope.changePlaybackSpeed = function(){
-      $interval.cancel($scope.timeline_time_interval);
+      $interval.cancel($scope.timeline_timer_interval);
       start_timeline_timer();
     }
+
+    var game_start = function () {
+        $scope.game_status = 'game';
+        new_round();
+    };
 
     function match_log(str){
         switch (true) {
@@ -125,7 +131,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 break;
             case /INFO:.+ (Launching RS)/.test(str):
                 //console.log("GAME STARTED");
-                new_round();
+                game_start();
+                break;
             case /INFO:.+ (Starting Knife Round)/.test(str):
                 //console.log("KNIFE ROUND");
                 knife_round(str);
@@ -190,11 +197,13 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function knife_round(log){
+        $scope.game_status = 'knife';
         new_round();
     }
 
     function new_round(){
         $scope.round_time = 120;
+        $scope.killbox = [];
         start_timer();
         set_all_alive();
     }
@@ -216,11 +225,10 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function log_kill(player,killed_player,weapon){
-        var data = {player: player, killed: killed_player, weapon: weapon };
-        $scope.killbox.push(data);
-        $timeout(function(){
-            $scope.killbox.splice($scope.killbox.indexOf(data),1);
-        },2000);
+        if($scope.game_status == 'game' || $scope.game_status == 'knife') {
+            var data = {player: player, killed: killed_player, weapon: weapon};
+            $scope.killbox.push(data);
+        }
     }
 
     function kill_player(name){
