@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'puma'
 
+gem 'pg'
 gem 'rails', '4.2.0'
 gem 'sqlite3'
 gem 'sass-rails', '~> 5.0'
@@ -22,8 +23,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'rails_admin'
 gem 'angularjs-rails'
-gem 'jquery-rails'
 gem 'normalize-rails'
 gem 'nokogiri'
 gem 'delayed_job_active_record'
 gem 'foundation-rails'
+
+gem 'daemons'
