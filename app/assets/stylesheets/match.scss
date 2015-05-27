@@ -156,6 +156,13 @@ $t-color: #b5aa62;
   .timeline{
     padding: 10px;
     position: relative;
+    .time-tooltip{
+      background: rgba(0,0,0,.5);
+      display:inline-block;
+      position:absolute;
+      margin-top:2px;
+      padding: 5px;
+    }
     p{
       font-size: 1em;
       display: inline-block;

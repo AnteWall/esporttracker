@@ -84,6 +84,11 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         return {'width' : procentage };
     };
 
+    $scope.getTimelineTooltipPos = function(){
+        var procentage = Math.round(( ( $scope.current_time - $scope.start_time ) / ( $scope.end_time - $scope.start_time ) ) * 100) + "%" //73%
+        return {'left' : procentage };
+    }
+
     $scope.getEndTimeTimeline = function(){
         if($scope.game_over){
             return $filter('date')($scope.end_time, 'HH:mm:ss');
