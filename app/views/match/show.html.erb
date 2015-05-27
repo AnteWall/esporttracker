@@ -38,7 +38,7 @@
       </div>
       <p class="small-3 column">Playback speed:</p>
       <div class="small-3 column">
-        <select class="small column" ng-model="playback_speed">
+        <select class="small column" ng-model="playback_speed" ng-change="changePlaybackSpeed()">
           <option value="1">1x</option>
           <option value="2">2x</option>
           <option value="5">5x</option>

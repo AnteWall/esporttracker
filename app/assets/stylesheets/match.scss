@@ -157,11 +157,32 @@ $t-color: #b5aa62;
     padding: 10px;
     position: relative;
     .time-tooltip{
-      background: rgba(0,0,0,.5);
-      display:inline-block;
-      position:absolute;
-      margin-top:2px;
-      padding: 5px;
+      position: absolute;
+      width: 100px;
+      height: 30px;
+      line-height: 6px;
+      padding: 10px;
+      font-size: 14px;
+      text-align: center;
+      color: rgb(113, 157, 171);
+      background: rgba(0, 0, 0, 0.7);
+      border: 4px solid rgba(0, 0, 0, 0);
+      border-radius: 5px;
+      text-shadow: rgba(0, 0, 0, 0.0980392) 1px 1px 1px;
+      box-shadow: rgba(0, 0, 0, 0.0980392) 1px 1px 2px 0px;
+      margin-left:-12px;
+      margin-top: 5px;
+      &:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent transparent rgba(0,0,0,.5) transparent;
+        top: -23px;
+        left: 0px;
+      }
     }
     p{
       font-size: 1em;

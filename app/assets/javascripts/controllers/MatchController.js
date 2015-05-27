@@ -96,6 +96,11 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         return 'Live';
     };
 
+    $scope.changePlaybackSpeed = function(){
+      $interval.cancel($scope.timeline_time_interval);
+      start_timeline_timer();
+    }
+
     function match_log(str){
         switch (true) {
             case /- Loading maps (\w+)/.test(str):
@@ -323,12 +328,12 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function start_timeline_timer(){
-        $scope.timeline_timer_interval = $timeout(function () {
+        $scope.timeline_timer_interval = $interval(function () {
             call_log_event($filter('date')($scope.current_time,'yyyy-MM-dd HH:mm:ss'));
             if($scope.game_over) pause_timer();
             if($scope.current_time <= $scope.end_time){
                 $scope.current_time.setSeconds($scope.current_time.getSeconds() + 1);
-                start_timeline_timer();
+                //start_timeline_timer();
             }
         },(1000/$scope.playback_speed));
     }
