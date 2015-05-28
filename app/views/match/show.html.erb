@@ -26,29 +26,7 @@
             </div>
         </div>
 
-        <div class="row timeline">
-            <div class="small-6 column ">
-                <div class="progress" style="position:relative;">
-                    <span class="meter" ng-style="getTimelineElapsed()"></span>
-                    <div class="time-tooltip" ng-style="getTimelineTooltipPos()">{{ current_time | date : 'HH:mm:ss' }}</div>
-                </div>
-
-                <div class="current-time"></div>
-                <p class="start-time">{{ start_time | date : 'HH:mm:ss' }}</p>
-
-                <p class="end-time">{{ getEndTimeTimeline() }}</p>
-            </div>
-            <p class="small-3 column">Playback speed:</p>
-            <div class="small-3 column">
-                <select class="small column" ng-model="playback_speed" ng-change="changePlaybackSpeed()">
-                    <option value="1">1x</option>
-                    <option value="2">2x</option>
-                    <option value="5">5x</option>
-                    <option value="10">10x</option>
-                </select>
-            </div>
-        </div>
-
+        <timeline time="time" game_over="game_over"></timeline>
 
         <div class="row">
             <div class="players">

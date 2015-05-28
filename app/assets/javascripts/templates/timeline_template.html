@@ -1,0 +1,22 @@
+<div class="row timeline">
+    <div class="small-6 column ">
+        <div class="progress" style="position:relative;">
+            <span class="meter" ng-style="getTimelineElapsed()"></span>
+            <div class="time-tooltip" ng-style="getTimelineTooltipPos()">{{ time.current_time | date : 'HH:mm:ss' }}</div>
+        </div>
+
+        <div class="current-time"></div>
+        <p class="start-time">{{ time.start_time | date : 'HH:mm:ss' }}</p>
+
+        <p class="end-time">{{ getEndTimeTimeline() }}</p>
+    </div>
+    <p class="small-3 column">Playback speed:</p>
+    <div class="small-3 column">
+        <select class="small column" ng-model="time.playback_speed" ng-change="time.changePlaybackSpeed()">
+            <option value="1">1x</option>
+            <option value="2">2x</option>
+            <option value="5">5x</option>
+            <option value="10">10x</option>
+        </select>
+    </div>
+</div>

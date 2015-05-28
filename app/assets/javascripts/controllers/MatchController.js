@@ -1,4 +1,4 @@
-app = angular.module('esporttracker', ['ngAnimate']);
+app = angular.module('esporttracker', ['ngAnimate','templates']);
 
 
 app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',function($scope,$filter,$http,$timeout,$interval){
@@ -14,12 +14,20 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.killbox = [];
     $scope.round_time = 0;
     $scope.timeline = {};
-    $scope.current_time;
-    $scope.end_time;
     $scope.timer;
     $scope.game_over = false;
-    $scope.playback_speed = 1;
     $scope.game_status = 'warmup';
+
+    $scope.time = {};
+    $scope.time.playback_speed = 1;
+    $scope.time.end_time = undefined;
+    $scope.time.start_time = undefined;
+    $scope.time.current_time = undefined;
+    $scope.time.timeline_timer_interval = undefined;
+    $scope.time.changePlaybackSpeed = function(){
+        $interval.cancel($scope.time.timeline_timer_interval);
+        start_timeline_timer();
+    }
 
     $scope.initialize = function(match_id){
         $scope.match_id = match_id;
@@ -80,27 +88,10 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         return Math.floor($scope.round_time/60);
     }
 
-    $scope.getTimelineElapsed = function(){
-        var procentage = Math.round(( ( $scope.current_time - $scope.start_time ) / ( $scope.end_time - $scope.start_time ) ) * 100) + "%" //73%
-        return {'width' : procentage };
-    };
 
-    $scope.getTimelineTooltipPos = function(){
-        var procentage = Math.round(( ( $scope.current_time - $scope.start_time ) / ( $scope.end_time - $scope.start_time ) ) * 100) + "%" //73%
-        return {'left' : procentage };
-    }
 
-    $scope.getEndTimeTimeline = function(){
-        if($scope.game_over){
-            return $filter('date')($scope.end_time, 'HH:mm:ss');
-        }
-        return 'Live';
-    };
 
-    $scope.changePlaybackSpeed = function(){
-      $interval.cancel($scope.timeline_timer_interval);
-      start_timeline_timer();
-    }
+
 
     var game_start = function () {
         $scope.game_status = 'game';
@@ -322,13 +313,12 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function set_start_time() {
-        console.log("SETTINGS TART TIME!");
         for(var i = 0; i < $scope.events.length; i++) {
             var ev = $scope.events[i];
             var time = get_time(ev.log);
             if(time != null){
-                $scope.start_time = new Date(time);
-                $scope.current_time = angular.copy($scope.start_time);
+                $scope.time.start_time = new Date(time);
+                $scope.time.current_time = angular.copy($scope.time.start_time);
                 start_timeline_timer();
                 return;
             }
@@ -336,14 +326,13 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function start_timeline_timer(){
-        $scope.timeline_timer_interval = $interval(function () {
-            call_log_event($filter('date')($scope.current_time,'yyyy-MM-dd HH:mm:ss'));
+        $scope.time.timeline_timer_interval = $interval(function () {
+            call_log_event($filter('date')($scope.time.current_time,'yyyy-MM-dd HH:mm:ss'));
             if($scope.game_over) pause_timer();
-            if($scope.current_time <= $scope.end_time){
-                $scope.current_time.setSeconds($scope.current_time.getSeconds() + 1);
-                //start_timeline_timer();
+            if($scope.time.current_time <= $scope.time.end_time){
+                $scope.time.current_time.setSeconds($scope.time.current_time.getSeconds() + 1);
             }
-        },(1000/$scope.playback_speed));
+        },(1000/$scope.time.playback_speed));
     }
 
     var playUntilLog = function (events, log) {
@@ -352,14 +341,14 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             if(events[i].log == log){
                 var time = get_time(log);
                 var time = get_time(log);
-                $scope.current_time = new Date(time);
+                $scope.time.current_time = new Date(time);
                 break;
             }
         }
     };
 
     function load_events(events){
-        if($scope.current_time == undefined) set_start_time();
+        if($scope.time.current_time == undefined) set_start_time();
         for(var i = 0; i < events.length; i++){
             var ev = events[i];
             addEventToTimeline(ev.log);
@@ -376,7 +365,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             if(events[i] == undefined || events[i].log == undefined) continue;
             var time = get_time(events[i].log);
             if(time != null){
-                $scope.end_time = new Date(get_time(events[i].log));
+                $scope.time.end_time = new Date(get_time(events[i].log));
                 break;
             }
         }
