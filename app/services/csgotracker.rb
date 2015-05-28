@@ -13,7 +13,6 @@ class Csgotracker
     puts "Started Tracking ::::::::::::::::::::::::::::::::::::"
     track
   end
-  handle_asynchronously :start_tracking
 
   def skip_lines(line)
     return true if line == '                    </div>'

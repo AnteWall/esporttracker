@@ -25,7 +25,10 @@ gem 'rails_admin'
 gem 'angularjs-rails'
 gem 'normalize-rails'
 gem 'nokogiri'
-gem 'delayed_job_active_record'
+#gem 'delayed_job_active_record'
+gem 'sinatra'
+gem 'sidekiq'
+
 gem 'foundation-rails'
 
 gem 'daemons'
