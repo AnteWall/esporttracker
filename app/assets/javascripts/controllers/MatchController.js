@@ -1,4 +1,3 @@
-app = angular.module('esporttracker', ['ngAnimate','templates']);
 
 
 app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',function($scope,$filter,$http,$timeout,$interval){
@@ -10,13 +9,17 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.teams = [];
     $scope.counter_terrorists = [];
     $scope.terrorists = [];
-    $scope.last_event;
+    $scope.last_event = undefined;
     $scope.killbox = [];
     $scope.round_time = 0;
     $scope.timeline = {};
-    $scope.timer;
+    $scope.timer = undefined;
     $scope.game_over = false;
     $scope.game_status = 'warmup';
+
+    $scope.players = {};
+    $scope.players.ct = [];
+    $scope.players.t = [];
 
     $scope.time = {};
     $scope.time.playback_speed = 1;
@@ -66,12 +69,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         $scope.current.debug.index += 1;
     }
 
-    $scope.playerStyle = function(player){
-        if(player == undefined) return;
-        if(!player.alive){
-            return 'dead';
-        }
-    }
 
     $scope.get_ct_team = function(){
         if($scope.teams.length != 2) return "";
@@ -87,11 +84,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.get_time_minutes = function(){
         return Math.floor($scope.round_time/60);
     }
-
-
-
-
-
 
     var game_start = function () {
         $scope.game_status = 'game';
@@ -155,8 +147,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         var reg = /- Loading maps (\w+)/;
         var matches = log.match(reg);
         $scope.matchinfo.map = matches[1];
-        $scope.counter_terrorists = [];
-        $scope.terrorists = [];
+        $scope.players.t = [];
+        $scope.players.ct = [];
     }
 
     function end_game(log){
@@ -200,11 +192,11 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function set_all_alive(){
-        for(var i = 0; i < $scope.terrorists.length;i++){
-            $scope.terrorists[i].alive = true;
+        for(var i = 0; i < $scope.players.t.length;i++){
+            $scope.players.t[i].alive = true;
         }
-        for(var i = 0; i < $scope.counter_terrorists.length;i++){
-            $scope.counter_terrorists[i].alive = true;
+        for(var i = 0; i < $scope.players.ct.length;i++){
+            $scope.players.ct[i].alive = true;
         }
     }
 
@@ -226,10 +218,10 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         var index = get_index_by_name_t(name);
         if(index == -1){
             index = get_index_by_name_ct(name);
-            if(index > -1) $scope.counter_terrorists[index].alive = false;
+            if(index > -1) $scope.players.ct[index].alive = false;
         }
         else{
-            $scope.terrorists[index].alive = false;
+            $scope.players.t[index].alive = false;
         }
     }
 
@@ -246,8 +238,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function get_index_by_name_ct(name){
-        for(var i = 0; i < $scope.counter_terrorists.length; i++){
-            var ct = $scope.counter_terrorists[i];
+        for(var i = 0; i < $scope.players.ct.length; i++){
+            var ct = $scope.players.ct[i];
             if(ct.name == name){
                 return i;
             }
@@ -255,9 +247,9 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         return -1;
     }
     function get_index_by_name_t(name){
-        for(var i = 0; i < $scope.terrorists.length; i++){
-            var ct = $scope.terrorists[i];
-            if(ct.name == name){
+        for(var i = 0; i < $scope.players.t.length; i++){
+            var t = $scope.players.t[i];
+            if(t.name == name){
                 return i;
             }
         }
@@ -273,12 +265,12 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
 
     function remove_from_ct(name){
         var index = get_index_by_name_ct(name);
-        if(index > -1) $scope.counter_terrorists.splice(index,1);
+        if(index > -1) $scope.players.ct.splice(index,1);
     }
 
     function remove_from_t(name){
         var index = get_index_by_name_t(name);
-        if(index > -1) $scope.terrorists.splice(index,1);
+        if(index > -1) $scope.players.t.splice(index,1);
     }
 
 
@@ -289,9 +281,9 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         remove_from_ct(matches[1]);
         var user = { name: matches[1], alive: true };
         if(matches[2] == "CT"){
-            $scope.counter_terrorists.push(user);
+            $scope.players.ct.push(user);
         }else if(matches[2] == "TERRORIST"){
-            $scope.terrorists.push(user);
+            $scope.players.t.push(user);
         }
     }
 
@@ -417,8 +409,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             }
         },3000);
     }
-
-
 
     function addEventToTimeline(log){
         var time = get_time(log);

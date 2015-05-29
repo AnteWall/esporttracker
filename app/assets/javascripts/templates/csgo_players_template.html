@@ -1,0 +1,27 @@
+<div class="players">
+    <ul class="small-4 column players-list">
+        <li ng-repeat="ct in players.ct" ng-class="playerStyle(ct)">
+            <p class="ct">{{ct.name}}</p>
+            <p class="stats">K : 0</p>
+            <p class="stats">A : 0</p>
+            <p class="stats">D : 0</p>
+        </li>
+    </ul>
+    <ul class="small-4 column players-list right">
+        <li ng-repeat="t in players.t" ng-class="playerStyle(t)">
+            <p class="t">{{t.name}}</p>
+            <p class="stats">K : 0</p>
+            <p class="stats">A : 0</p>
+            <p class="stats">D : 0</p>
+        </li>
+    </ul>
+    <div class="medium-4 column kill-box">
+        <div ng-repeat="event in killbox">
+            <div class="animated fadeInDown row">
+                <p class="small-4 column"> {{event.player}} </p>
+                <p class="small-4 column"> {{ event.weapon }}</p>
+                <p class="small-4 column"> {{event.killed}} </p>
+            </div>
+        </div>
+    </div>
+</div>

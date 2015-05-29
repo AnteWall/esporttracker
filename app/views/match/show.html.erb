@@ -29,27 +29,9 @@
         <timeline time="time" game_over="game_over"></timeline>
 
         <div class="row">
-            <div class="players">
-                <ul class="small-4 column players-list">
-                    <li ng-repeat="ct in counter_terrorists" ng-class="playerStyle(ct)">
-                        <p class="ct">{{ct.name}}</p>
-                    </li>
-                </ul>
-                <ul class="small-4 column players-list right">
-                    <li ng-repeat="t in terrorists" ng-class="playerStyle(t)">
-                        <p class="t">{{t.name}}</p>
-                    </li>
-                </ul>
-                <div class="medium-4 column kill-box">
-                    <div ng-repeat="event in killbox">
-                        <div class="animated fadeInDown row">
-                            <p class="small-4 column"> {{event.player}} </p>
-                            <p class="small-4 column"> {{ event.weapon }}</p>
-                            <p class="small-4 column"> {{event.killed}} </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <cs-players players="players" killbox="killbox"></cs-players>
+
         </div>
     </div>
 </div>
