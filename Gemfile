@@ -32,6 +32,7 @@ gem 'nokogiri'
 
 gem 'sinatra'
 gem 'sidekiq'
+gem 'sidetiq'
 
 gem 'foundation-rails'
 

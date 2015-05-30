@@ -24,6 +24,45 @@
         </div>
     <% end %>
 </div>
+
+<div class="row">
+    <div class="small-12 column subject-bar ">
+        <h2>Upcoming Matches</h2>
+    </div>
+    <table class="match-overview-table">
+        <thead>
+        <tr>
+            <th>Teams</th>
+            <th>Tournament</th>
+            <th width="150">Map</th>
+            <th width="150">Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @matches.upcoming.each do |match| %>
+            <tr onclick="location.href='<%= match_path(match) %>'">
+                <td>
+                    <p class="team-1"><%= match.team_1 %></p>
+                    <p class="versus">vs</p>
+                    <p class="team-2"><%= match.team_2 %></p>
+                </td>
+                <td><p><%= match.tournament %></p></td>
+
+                <td><p>de_dust2</p></td>
+                <td>
+                    <p class="team-1"><%= match.team_1_score %></p>
+                    <p>-</p>
+                    <p class="team-2"><%= match.team_2_score %></p>
+                </td>
+            </tr>
+        <% end %>
+
+
+        </tbody>
+    </table>
+</div>
+
+
 <div class="row">
     <div class="small-12 column subject-bar ">
         <h2>Finsihed Matches</h2>
@@ -32,6 +71,8 @@
         <thead>
         <tr>
             <th>Teams</th>
+            <th>Tournament</th>
+
             <th width="150">Map</th>
             <th width="150">Score</th>
         </tr>
@@ -44,6 +85,7 @@
                     <p class="versus">vs</p>
                     <p class="team-2"><%= match.team_2 %></p>
                 </td>
+                <td><p><%= match.tournament %></p></td>
                 <td><p>de_dust2</p></td>
                 <td>
                     <p class="team-1"><%= match.team_1_score %></p>

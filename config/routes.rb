@@ -7,5 +7,7 @@ Rails.application.routes.draw do
     get 'track' => 'match#start_tracking'
     get 'log' => 'match#log'
   end
+
+  get 'test' => 'home#test'
     
 end

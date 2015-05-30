@@ -46,6 +46,13 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         return "match-header " + $scope.matchinfo.map;
     }
 
+    $scope.next_round = function () {
+
+        $interval.cancel($scope.time.timeline_timer_interval);
+
+        //TODO FIX THIS
+    };
+
     function pause_timer(){
         $interval.cancel($scope.timer);
     }
@@ -200,28 +207,72 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         }
     }
 
+    var clear_all_alive = function (side) {
+        if(side == "T"){
+            console.log("CLEARING T!");
+            for(var i = 0; i < $scope.players.t.length;i++){
+                if($scope.players.t[i].alive == true){
+                    remove_from_t($scope.players.t[i].name);
+                }
+            }
+        }
+        else if(side == "CT") {
+            for (var i = 0; i < $scope.players.ct.length; i++) {
+                if ($scope.players.ct[i].alive == true) {
+                    remove_from_ct($scope.players.ct[i].name);
+                }
+            }
+        }
+    };
+
     function killed(log){
-        var reg = /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+)/;
+        console.log(log);
+        var reg = /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+).* \(CT: (\d+) - T: (.*\d+)\)/;
         var matches = log.match(reg);
-        log_kill(matches[1],matches[2],matches[3]);
-        kill_player(matches[2]);
+        if($scope.game_status == 'game' || $scope.game_status == 'knife') {
+
+            //TODO Add player who killed if not exists
+            add_kill_to_player(matches[1]);
+            log_kill(matches[1],matches[2],matches[3]);
+            kill_player(matches[2]);
+            if(matches[4] == "0"){
+                clear_all_alive("CT");
+            }
+            else if(matches[5] == "0"){
+                clear_all_alive("T");
+            }
+        }
     }
 
-    function log_kill(player,killed_player,weapon){
-        if($scope.game_status == 'game' || $scope.game_status == 'knife') {
-            var data = {player: player, killed: killed_player, weapon: weapon};
-            $scope.killbox.push(data);
+
+
+    var add_kill_to_player = function (player) {
+        var i = get_index_by_name_ct(player)
+        if(i > -1) $scope.players.ct[i].kills += 1;
+        else{
+            var i = get_index_by_name_t(player);
+            if(i > -1) $scope.players.t[i].kills += 1;
         }
+    };
+
+    function log_kill(player,killed_player,weapon){
+        var data = {player: player, killed: killed_player, weapon: weapon};
+        $scope.killbox.push(data);
     }
 
     function kill_player(name){
         var index = get_index_by_name_t(name);
         if(index == -1){
             index = get_index_by_name_ct(name);
-            if(index > -1) $scope.players.ct[index].alive = false;
+            if(index > -1) {
+                $scope.players.ct[index].alive = false;
+                $scope.players.ct[index].deaths += 1;
+            }
         }
         else{
             $scope.players.t[index].alive = false;
+            $scope.players.t[index].deaths += 1;
+
         }
     }
 
@@ -277,9 +328,18 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     function join_team(log){
         var reg = /- (.+) join team (\w+)/;
         var matches = log.match(reg);
+        var player_i = get_index_by_name_ct(matches[1]);
+        var user;
+
+        user = { name: matches[1], alive: true, deaths: 0, kills: 0 };
+        if(player_i > -1) user = $scope.players.ct[player_i];
+        else{
+            var player_i = get_index_by_name_t(matches[1]);
+            if(player_i > -1) user = $scope.players.t[player_i];
+        }
+
         remove_from_t(matches[1]);
         remove_from_ct(matches[1]);
-        var user = { name: matches[1], alive: true };
         if(matches[2] == "CT"){
             $scope.players.ct.push(user);
         }else if(matches[2] == "TERRORIST"){
@@ -374,6 +434,15 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     function isKnifeRound(log){
         switch(true){
             case /INFO:.+ (Starting Knife Round)/.test(log):
+                return true;
+                break;
+        }
+        return false;
+    }
+
+    function isNewRound(log){
+        switch(true){
+            case /- Un round a été marqué -.*\((\d+)\) - \((\d+)\)/.test(log):
                 return true;
                 break;
         }
