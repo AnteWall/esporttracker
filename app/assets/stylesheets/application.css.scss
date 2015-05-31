@@ -76,13 +76,24 @@ span.live{
 
 .subject-bar{
   border:1px solid black;
-  margin-top:10px!important;
-  padding: 10px 10px 0 20px;
   #background-image: image-url('menu_bg_2.jpg');
   background-color: #333;
+  padding: 5px;
   h2{
     color:#f7f7f7;
     font-weight: bold;
     text-transform: uppercase;
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+  p{
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+  fieldset.switch{
+    display: inline-block;
+    vertical-align: middle;
   }
 }

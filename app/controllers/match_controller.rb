@@ -14,8 +14,11 @@ class MatchController < ApplicationController
     render json: match
   end
 
-  private
+  def live
+    render json: Match.live
+  end
 
+  private
   def match
     Match.find(params[:id])
   end
