@@ -17,7 +17,7 @@
         <div ng-repeat="event in killbox">
             <div class="animated fadeInDown row">
                 <p class="small-4 column"> {{event.player}} </p>
-                <p class="small-4 column"> {{ event.weapon }}</p>
+                <img class="small-4 column" ng-src="/csgo/weapons/{{ event.weapon }}.png">
                 <p class="small-4 column"> {{event.killed}} </p>
             </div>
         </div>
