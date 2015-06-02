@@ -31,14 +31,37 @@
         </div>
         <timeline time="time" game_over="game_over"></timeline>
 
-        <div class="row">
-            <div class="small-12 column kill-box">
+        <div class="row kill-box">
+            <div class="small-12 large-6 column">
+                <h3>Current round kills</h3>
+
                 <div ng-repeat="event in killbox">
-                    <div class="animated fadeInDown row">
-                        <p class="small-4 column"> {{event.player}} </p>
-                        <img class="small-4 column" ng-src="/csgo/weapons/{{ event.weapon }}.png">
-                        <p class="small-4 column"> {{event.killed}} </p>
+                    <div class="animated fadeInDown row kill">
+                        <p class="small-4 column" ng-class="getPlayerSide(event.player)"> {{event.player}} </p>
+                        <div class="small-4 column">
+                            <img ng-src="/csgo/weapons/{{ event.weapon }}.png">
+                        </div>
+                        <p class="small-4 column" ng-class="getPlayerSide(event.killed)"> {{event.killed}} </p>
                     </div>
+                </div>
+                <div class="row kill" ng-show="killbox.length == 0">
+                    <p>No kills right now...</p>
+                </div>
+            </div>
+
+            <div class="small-12 large-6 column">
+                <h3>Last rounds kills</h3>
+                <div ng-repeat="event in last_round_kills">
+                    <div class="animated fadeInDown row kill">
+                        <p class="small-4 column" ng-class="getPlayerSide(event.player)"> {{event.player}} </p>
+                        <div class="small-4 column">
+                            <img ng-src="/csgo/weapons/{{ event.weapon }}.png">
+                        </div>
+                        <p class="small-4 column" ng-class="getPlayerSide(event.killed)"> {{event.killed}} </p>
+                    </div>
+                </div>
+                <div class="row kill" ng-show="last_round_kills.length == 0">
+                    <p>No kills last round.</p>
                 </div>
             </div>
 

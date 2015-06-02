@@ -1,17 +1,23 @@
 <div class="row timeline">
-    <div class="small-6 column ">
+    <div class="small-12 medium-6 column ">
         <div class="progress" style="position:relative;">
             <span class="meter" ng-style="getTimelineElapsed()"></span>
-            <div class="time-tooltip" ng-style="getTimelineTooltipPos()">{{ time.current_time | date : 'HH:mm:ss' }}</div>
+            <!--<div class="time-tooltip" ng-style="getTimelineTooltipPos()">{{ time.current_time | date : 'HH:mm:ss' }}</div>-->
         </div>
 
         <div class="current-time"></div>
         <p class="start-time">{{ time.start_time | date : 'HH:mm:ss' }}</p>
 
-        <p class="end-time">{{ getEndTimeTimeline() }}</p>
+        <p class="end-time">{{ time.current_time | date : 'HH:mm:ss' }} / {{ getEndTimeTimeline() }}</p>
     </div>
-    <p class="small-3 column">Playback speed:</p>
-    <div class="small-3 column">
+    <div class="small-12 medium-3 column">
+        <button class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Previous round" ><i class="fi-previous"></i></button>
+        <button class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Next round"><i class="fi-next"></i></button>
+        <button ng-click="time.pauseTimer()" class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Pause"><i class="fi-pause"></i></button>
+        <button ng-click="time.startTimer()" class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Play"><i class="fi-play"></i></button>
+
+    </div>
+    <div class="small-2 large-1 column">
         <select class="small column" ng-model="time.playback_speed" ng-change="time.changePlaybackSpeed()">
             <option value="1">1x</option>
             <option value="2">2x</option>

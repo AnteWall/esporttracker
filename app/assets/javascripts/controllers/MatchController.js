@@ -11,6 +11,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.terrorists = [];
     $scope.last_event = undefined;
     $scope.killbox = [];
+    $scope.last_round_kills = [];
     $scope.round_time = 0;
     $scope.timeline = {};
     $scope.timer = undefined;
@@ -27,24 +28,43 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.time.start_time = undefined;
     $scope.time.current_time = undefined;
     $scope.time.timeline_timer_interval = undefined;
+    $scope.time.pauseTimer = function(){
+        console.log("pauseing!");
+        $interval.cancel($scope.time.timeline_timer_interval);
+    };
+    $scope.time.startTimer = function(){
+        console.log("Stariong");
+        $scope.time.pauseTimer(); //Cancel so it won't double play timers.
+        start_timeline_timer();
+    };
     $scope.time.changePlaybackSpeed = function(){
         $interval.cancel($scope.time.timeline_timer_interval);
         start_timeline_timer();
-    }
+    };
 
     $scope.initialize = function(match_id){
         $scope.match_id = match_id;
         var url = '/match/' + match_id + '/log';
         loadLog(url);
+    };
+
+    $scope.getPlayerSide = function(player){
+        if(get_index_by_name_ct(player) > -1){
+            return  'counter-terrorists';
+        }else if(get_index_by_name_t(player) > -1){
+            return 'terrorists';
+        }else{
+            return 'bajs';
+        }
     }
 
     $scope.debug_key_next = function(keyevent){
 
-    }
+    };
 
     $scope.get_header_style = function(){
-        return "match-header " + $scope.matchinfo.map;
-    }
+        return 'match-header ' + $scope.matchinfo.map;
+    };
 
     $scope.next_round = function () {
 
@@ -193,6 +213,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
 
     function new_round(){
         $scope.round_time = 120;
+        $scope.last_round_kills = angular.copy($scope.killbox);
         $scope.killbox = [];
         start_timer();
         set_all_alive();
@@ -226,13 +247,12 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     };
 
     function killed(log){
-        console.log(log);
         var reg = /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+).* \(CT: (\d+) - T: (.*\d+)\)/;
         var matches = log.match(reg);
         if($scope.game_status == 'game' || $scope.game_status == 'knife') {
 
             //TODO Add player who killed if not exists
-            add_kill_to_player(matches[1]);
+            if($scope.game_status == 'game') add_kill_to_player(matches[1]);
             log_kill(matches[1],matches[2],matches[3]);
             kill_player(matches[2]);
             if(matches[4] == "0"){

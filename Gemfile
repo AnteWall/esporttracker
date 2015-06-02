@@ -19,6 +19,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
+
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'rails_admin'
@@ -35,5 +36,5 @@ gem 'sidekiq'
 gem 'sidetiq'
 
 gem 'foundation-rails'
-
+gem 'foundation-icons-sass-rails'
 gem 'daemons'

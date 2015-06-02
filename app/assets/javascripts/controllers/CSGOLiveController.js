@@ -10,7 +10,7 @@ app.controller('CSGOLiveCtrl',['$scope','Match','$interval',function($scope,Matc
         getMatches(); //To request onLoad and then every 5 seconds
         $interval(function(){
             if($scope.live_update) getMatches();
-        },5000);
+        },10000);
     }
 
     function getMatches(){
