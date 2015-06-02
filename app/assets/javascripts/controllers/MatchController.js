@@ -37,7 +37,9 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         $scope.time.pauseTimer(); //Cancel so it won't double play timers.
         start_timeline_timer();
     };
-    $scope.time.changePlaybackSpeed = function(){
+    $scope.time.changePlaybackSpeed = function(number){
+        console.log(number);
+        $scope.time.playback_speed = number;
         $interval.cancel($scope.time.timeline_timer_interval);
         start_timeline_timer();
     };
@@ -246,12 +248,34 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         }
     };
 
+    var playerExists = function (player) {
+        if(get_index_by_name_ct(player) > -1) return true;
+        if(get_index_by_name_t(player) > -1) return true;
+        return false;
+    };
+
+    function addTPlayer(name){
+        var user = { name: name, alive: true, deaths: 0, kills: 0 };
+        $scope.players.t.push(user);
+    }
+    function addCTPlayer(name){
+        var user = { name: name, alive: true, deaths: 0, kills: 0 };
+        $scope.players.ct.push(user);
+    }
+
     function killed(log){
         var reg = /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+).* \(CT: (\d+) - T: (.*\d+)\)/;
         var matches = log.match(reg);
         if($scope.game_status == 'game' || $scope.game_status == 'knife') {
 
-            //TODO Add player who killed if not exists
+            //If Player don't exits, add him/her
+            if(!playerExists(matches[1])){
+                if(get_index_by_name_ct(matches[2]) > -1){
+                    addTPlayer(matches[1])
+                }else if(get_index_by_name_t(matches[2]) > -1){
+                    addCTPlayer(matches[1]);
+                }
+            }
             if($scope.game_status == 'game') add_kill_to_player(matches[1]);
             log_kill(matches[1],matches[2],matches[3]);
             kill_player(matches[2]);
@@ -286,13 +310,16 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             index = get_index_by_name_ct(name);
             if(index > -1) {
                 $scope.players.ct[index].alive = false;
-                $scope.players.ct[index].deaths += 1;
+                if($scope.game_status == 'game') {
+                    $scope.players.ct[index].deaths += 1;
+                }
             }
         }
         else{
             $scope.players.t[index].alive = false;
-            $scope.players.t[index].deaths += 1;
-
+            if($scope.game_status == 'game') {
+                $scope.players.t[index].deaths += 1;
+            }
         }
     }
 
