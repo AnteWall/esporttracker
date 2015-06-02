@@ -15,6 +15,9 @@
  *= require_tree .
  *= require_self
  */
+$ct-color: #9fcdfa;
+$t-color: #b5aa62;
+
 *{
   margin: 0;
   padding: 0;
@@ -96,4 +99,10 @@ span.live{
     display: inline-block;
     vertical-align: middle;
   }
+}
+.counter-terrorists{
+  color: $ct-color;
+}
+.terrorists{
+  color: $t-color;
 }

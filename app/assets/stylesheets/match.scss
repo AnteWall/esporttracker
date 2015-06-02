@@ -6,28 +6,27 @@ $t-color: #b5aa62;
 
 @media (max-width: 1024px) {
   .match-header {
-    .teams p.terrorists,.teams p.cterrorist{
+    .teams p.terrorists, .teams p.cterrorist {
       font-size: 1em !important;
     }
-
-  }
-
-  .players{
-    li{
-      p.t,p.ct{
-        font-size: 2.5vw!important;
+    .score {
+      p {
+        font-size: 2.7em !important;
       }
     }
   }
-
-
+  .players {
+    li {
+      p.t, p.ct {
+        font-size: 2.5vw !important;
+      }
+    }
+  }
 }
-
 .match {
   margin: auto;
   text-align: center;
   .match-header {
-    background-color: #37444d;
     padding: 12px;
     position: relative;
     .match-info {
@@ -57,7 +56,9 @@ $t-color: #b5aa62;
       p {
         color: white;
         font-weight: bold;
-        font-size: 2em;
+        font-size: 4.7em;
+        margin:0;
+        padding: 0;
         &.ct-score {
           color: $ct-color;
         }
@@ -116,12 +117,16 @@ $t-color: #b5aa62;
     background-position: center;
   }
   .players {
-    margin-bottom: 20px;
+    h3{
+      font-size: 0.8em;
+      margin: 10px 0 0 0;
+      padding: 2px;
+      background-color: #202020;
+    }
     ul {
-      padding: 0;
+      background-color: #303030;
       margin: 0;
       list-style: none;
-      margin-bottom: 20px;
       &.left {
       }
       p.stats{
@@ -137,8 +142,7 @@ $t-color: #b5aa62;
       }
       li {
         background-color: #464646;
-        padding: 5px 5px 0 5px;
-        margin: 2px 0;
+        padding: 2px 2px 0 2px;
         position: relative;
         &.dead {
           p {
@@ -187,6 +191,9 @@ $t-color: #b5aa62;
       font-size: 0.7em;
     }
     img {
+      max-width: 5em;
+      text-align: center;
+      display: inline-block;
     }
   }
 

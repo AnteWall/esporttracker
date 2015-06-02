@@ -1,36 +1,46 @@
 <div class="row">
     <div class="column match" ng-controller="MatchCtrl" ng-init="initialize('<%= @match.id %>')">
         <div class="row" ng-class="get_header_style()">
+            <div class="medium-6 small-12 column match-header">
 
-            <div class="row match-stats">
-                <!--<p class="time">~{{ get_time_minutes() }}:{{ round_time % 60 | digits }}</p>-->
-                <p>Game status: {{ game_status }}</p>
-                <p class="rounds">Map: {{ matchinfo.map }}
-                <p class="rounds">Round: {{get_round()}}/30</p>
+                <div class="row match-stats">
+                    <!--<p class="time">~{{ get_time_minutes() }}:{{ round_time % 60 | digits }}</p>-->
+                    <p>Game status: {{ game_status }}</p>
+                    <p class="rounds">Map: {{ matchinfo.map }}
+                    <p class="rounds">Round: {{get_round()}}/30</p>
+                </div>
+                <div class="row score">
+                    <div class="small-6 column">
+                        <p class="ct-score">{{ get_ct_team().score }}</p>
+                    </div>
+                    <div class="small-6 column">
+                        <p class="t-score">{{ get_t_team().score }}</p>
+                    </div>
+                </div>
+                <div class="row teams">
+                    <div class="small-6 column ct-team">
+                        <p class="cterrorist">{{ get_ct_team().name }} </p>
+                    </div>
+                    <div class="small-6 column  t-team">
+                        <p class="terrorists">{{ get_t_team().name }}</p>
+                    </div>
+                </div>
             </div>
-            <div class="row score">
-                <div class="small-6 column">
-                    <p class="ct-score">{{ get_ct_team().score }}</p>
-                </div>
-                <div class="small-6 column">
-                    <p class="t-score">{{ get_t_team().score }}</p>
-                </div>
-            </div>
-            <div class="row teams">
-                <div class="small-6 column ct-team">
-                    <p class="cterrorist">{{ get_ct_team().name }} </p>
-                </div>
-                <div class="small-6 column  t-team">
-                    <p class="terrorists">{{ get_t_team().name }}</p>
-                </div>
-            </div>
+            <cs-players players="players"></cs-players>
+
         </div>
-
         <timeline time="time" game_over="game_over"></timeline>
 
         <div class="row">
-
-            <cs-players players="players" killbox="killbox"></cs-players>
+            <div class="small-12 column kill-box">
+                <div ng-repeat="event in killbox">
+                    <div class="animated fadeInDown row">
+                        <p class="small-4 column"> {{event.player}} </p>
+                        <img class="small-4 column" ng-src="/csgo/weapons/{{ event.weapon }}.png">
+                        <p class="small-4 column"> {{event.killed}} </p>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

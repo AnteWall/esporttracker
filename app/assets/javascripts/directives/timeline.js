@@ -7,7 +7,6 @@ app.directive('timeline', function() {
         scope: {
             time: '=time',
             gameOver: '=gameOver',
-
         },
         templateUrl: 'timeline_template.html'
     };
