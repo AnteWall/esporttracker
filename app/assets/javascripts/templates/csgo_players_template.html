@@ -1,0 +1,22 @@
+<div class="players">
+    <div class="medium-3 small-6 column">
+        <h3 class="counter-terrorists">Counter-Terrorists</h3>
+        <ul class="small-12 players-list">
+            <li ng-repeat="ct in players.ct" ng-class="playerStyle(ct)">
+                <p class="ct">{{ ct.name }}</p>
+                <p class="stats">K : {{ ct.kills }}</p>
+                <p class="stats">D : {{ ct.deaths }}</p>
+            </li>
+        </ul>
+    </div>
+    <div class="medium-3 small-6 column">
+        <h3 class="terrorists">Terrorists</h3>
+        <ul class="small-12 players-list right">
+            <li ng-repeat="t in players.t" ng-class="playerStyle(t)">
+                <p class="t">{{t.name}}</p>
+                <p class="stats">K : {{ t.kills }}</p>
+                <p class="stats">D : {{ t.deaths }}</p>
+            </li>
+        </ul>
+    </div>
+</div>

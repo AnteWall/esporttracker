@@ -1,4 +1,3 @@
-app = angular.module('esporttracker', ['ngAnimate']);
 
 
 app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',function($scope,$filter,$http,$timeout,$interval){
@@ -10,16 +9,28 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.teams = [];
     $scope.counter_terrorists = [];
     $scope.terrorists = [];
-    $scope.last_event;
+    $scope.last_event = undefined;
     $scope.killbox = [];
     $scope.round_time = 0;
     $scope.timeline = {};
-    $scope.current_time;
-    $scope.end_time;
-    $scope.timer;
+    $scope.timer = undefined;
     $scope.game_over = false;
-    $scope.playback_speed = 1;
     $scope.game_status = 'warmup';
+
+    $scope.players = {};
+    $scope.players.ct = [];
+    $scope.players.t = [];
+
+    $scope.time = {};
+    $scope.time.playback_speed = 1;
+    $scope.time.end_time = undefined;
+    $scope.time.start_time = undefined;
+    $scope.time.current_time = undefined;
+    $scope.time.timeline_timer_interval = undefined;
+    $scope.time.changePlaybackSpeed = function(){
+        $interval.cancel($scope.time.timeline_timer_interval);
+        start_timeline_timer();
+    }
 
     $scope.initialize = function(match_id){
         $scope.match_id = match_id;
@@ -34,6 +45,13 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.get_header_style = function(){
         return "match-header " + $scope.matchinfo.map;
     }
+
+    $scope.next_round = function () {
+
+        $interval.cancel($scope.time.timeline_timer_interval);
+
+        //TODO FIX THIS
+    };
 
     function pause_timer(){
         $interval.cancel($scope.timer);
@@ -58,12 +76,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         $scope.current.debug.index += 1;
     }
 
-    $scope.playerStyle = function(player){
-        if(player == undefined) return;
-        if(!player.alive){
-            return 'dead';
-        }
-    }
 
     $scope.get_ct_team = function(){
         if($scope.teams.length != 2) return "";
@@ -78,28 +90,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
 
     $scope.get_time_minutes = function(){
         return Math.floor($scope.round_time/60);
-    }
-
-    $scope.getTimelineElapsed = function(){
-        var procentage = Math.round(( ( $scope.current_time - $scope.start_time ) / ( $scope.end_time - $scope.start_time ) ) * 100) + "%" //73%
-        return {'width' : procentage };
-    };
-
-    $scope.getTimelineTooltipPos = function(){
-        var procentage = Math.round(( ( $scope.current_time - $scope.start_time ) / ( $scope.end_time - $scope.start_time ) ) * 100) + "%" //73%
-        return {'left' : procentage };
-    }
-
-    $scope.getEndTimeTimeline = function(){
-        if($scope.game_over){
-            return $filter('date')($scope.end_time, 'HH:mm:ss');
-        }
-        return 'Live';
-    };
-
-    $scope.changePlaybackSpeed = function(){
-      $interval.cancel($scope.timeline_timer_interval);
-      start_timeline_timer();
     }
 
     var game_start = function () {
@@ -164,8 +154,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         var reg = /- Loading maps (\w+)/;
         var matches = log.match(reg);
         $scope.matchinfo.map = matches[1];
-        $scope.counter_terrorists = [];
-        $scope.terrorists = [];
+        $scope.players.t = [];
+        $scope.players.ct = [];
     }
 
     function end_game(log){
@@ -209,36 +199,80 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function set_all_alive(){
-        for(var i = 0; i < $scope.terrorists.length;i++){
-            $scope.terrorists[i].alive = true;
+        for(var i = 0; i < $scope.players.t.length;i++){
+            $scope.players.t[i].alive = true;
         }
-        for(var i = 0; i < $scope.counter_terrorists.length;i++){
-            $scope.counter_terrorists[i].alive = true;
+        for(var i = 0; i < $scope.players.ct.length;i++){
+            $scope.players.ct[i].alive = true;
         }
     }
+
+    var clear_all_alive = function (side) {
+        if(side == "T"){
+            console.log("CLEARING T!");
+            for(var i = 0; i < $scope.players.t.length;i++){
+                if($scope.players.t[i].alive == true){
+                    remove_from_t($scope.players.t[i].name);
+                }
+            }
+        }
+        else if(side == "CT") {
+            for (var i = 0; i < $scope.players.ct.length; i++) {
+                if ($scope.players.ct[i].alive == true) {
+                    remove_from_ct($scope.players.ct[i].name);
+                }
+            }
+        }
+    };
 
     function killed(log){
-        var reg = /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+)/;
+        console.log(log);
+        var reg = /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+).* \(CT: (\d+) - T: (.*\d+)\)/;
         var matches = log.match(reg);
-        log_kill(matches[1],matches[2],matches[3]);
-        kill_player(matches[2]);
+        if($scope.game_status == 'game' || $scope.game_status == 'knife') {
+
+            //TODO Add player who killed if not exists
+            add_kill_to_player(matches[1]);
+            log_kill(matches[1],matches[2],matches[3]);
+            kill_player(matches[2]);
+            if(matches[4] == "0"){
+                clear_all_alive("CT");
+            }
+            else if(matches[5] == "0"){
+                clear_all_alive("T");
+            }
+        }
     }
 
-    function log_kill(player,killed_player,weapon){
-        if($scope.game_status == 'game' || $scope.game_status == 'knife') {
-            var data = {player: player, killed: killed_player, weapon: weapon};
-            $scope.killbox.push(data);
+
+
+    var add_kill_to_player = function (player) {
+        var i = get_index_by_name_ct(player)
+        if(i > -1) $scope.players.ct[i].kills += 1;
+        else{
+            var i = get_index_by_name_t(player);
+            if(i > -1) $scope.players.t[i].kills += 1;
         }
+    };
+
+    function log_kill(player,killed_player,weapon){
+        var data = {player: player, killed: killed_player, weapon: weapon};
+        $scope.killbox.push(data);
     }
 
     function kill_player(name){
         var index = get_index_by_name_t(name);
         if(index == -1){
             index = get_index_by_name_ct(name);
-            if(index > -1) $scope.counter_terrorists[index].alive = false;
+            if(index > -1) {
+                $scope.players.ct[index].alive = false;
+                $scope.players.ct[index].deaths += 1;
+            }
         }
         else{
-            $scope.terrorists[index].alive = false;
+            $scope.players.t[index].alive = false;
+            $scope.players.t[index].deaths += 1;
+
         }
     }
 
@@ -255,8 +289,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function get_index_by_name_ct(name){
-        for(var i = 0; i < $scope.counter_terrorists.length; i++){
-            var ct = $scope.counter_terrorists[i];
+        for(var i = 0; i < $scope.players.ct.length; i++){
+            var ct = $scope.players.ct[i];
             if(ct.name == name){
                 return i;
             }
@@ -264,9 +298,9 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         return -1;
     }
     function get_index_by_name_t(name){
-        for(var i = 0; i < $scope.terrorists.length; i++){
-            var ct = $scope.terrorists[i];
-            if(ct.name == name){
+        for(var i = 0; i < $scope.players.t.length; i++){
+            var t = $scope.players.t[i];
+            if(t.name == name){
                 return i;
             }
         }
@@ -282,25 +316,34 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
 
     function remove_from_ct(name){
         var index = get_index_by_name_ct(name);
-        if(index > -1) $scope.counter_terrorists.splice(index,1);
+        if(index > -1) $scope.players.ct.splice(index,1);
     }
 
     function remove_from_t(name){
         var index = get_index_by_name_t(name);
-        if(index > -1) $scope.terrorists.splice(index,1);
+        if(index > -1) $scope.players.t.splice(index,1);
     }
 
 
     function join_team(log){
         var reg = /- (.+) join team (\w+)/;
         var matches = log.match(reg);
+        var player_i = get_index_by_name_ct(matches[1]);
+        var user;
+
+        user = { name: matches[1], alive: true, deaths: 0, kills: 0 };
+        if(player_i > -1) user = $scope.players.ct[player_i];
+        else{
+            var player_i = get_index_by_name_t(matches[1]);
+            if(player_i > -1) user = $scope.players.t[player_i];
+        }
+
         remove_from_t(matches[1]);
         remove_from_ct(matches[1]);
-        var user = { name: matches[1], alive: true };
         if(matches[2] == "CT"){
-            $scope.counter_terrorists.push(user);
+            $scope.players.ct.push(user);
         }else if(matches[2] == "TERRORIST"){
-            $scope.terrorists.push(user);
+            $scope.players.t.push(user);
         }
     }
 
@@ -322,13 +365,12 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function set_start_time() {
-        console.log("SETTINGS TART TIME!");
         for(var i = 0; i < $scope.events.length; i++) {
             var ev = $scope.events[i];
             var time = get_time(ev.log);
             if(time != null){
-                $scope.start_time = new Date(time);
-                $scope.current_time = angular.copy($scope.start_time);
+                $scope.time.start_time = new Date(time);
+                $scope.time.current_time = angular.copy($scope.time.start_time);
                 start_timeline_timer();
                 return;
             }
@@ -336,14 +378,13 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
     function start_timeline_timer(){
-        $scope.timeline_timer_interval = $interval(function () {
-            call_log_event($filter('date')($scope.current_time,'yyyy-MM-dd HH:mm:ss'));
+        $scope.time.timeline_timer_interval = $interval(function () {
+            call_log_event($filter('date')($scope.time.current_time,'yyyy-MM-dd HH:mm:ss'));
             if($scope.game_over) pause_timer();
-            if($scope.current_time <= $scope.end_time){
-                $scope.current_time.setSeconds($scope.current_time.getSeconds() + 1);
-                //start_timeline_timer();
+            if($scope.time.current_time <= $scope.time.end_time){
+                $scope.time.current_time.setSeconds($scope.time.current_time.getSeconds() + 1);
             }
-        },(1000/$scope.playback_speed));
+        },(1000/$scope.time.playback_speed));
     }
 
     var playUntilLog = function (events, log) {
@@ -352,14 +393,14 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             if(events[i].log == log){
                 var time = get_time(log);
                 var time = get_time(log);
-                $scope.current_time = new Date(time);
+                $scope.time.current_time = new Date(time);
                 break;
             }
         }
     };
 
     function load_events(events){
-        if($scope.current_time == undefined) set_start_time();
+        if($scope.time.current_time == undefined) set_start_time();
         for(var i = 0; i < events.length; i++){
             var ev = events[i];
             addEventToTimeline(ev.log);
@@ -376,7 +417,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             if(events[i] == undefined || events[i].log == undefined) continue;
             var time = get_time(events[i].log);
             if(time != null){
-                $scope.end_time = new Date(get_time(events[i].log));
+                $scope.time.end_time = new Date(get_time(events[i].log));
                 break;
             }
         }
@@ -393,6 +434,15 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     function isKnifeRound(log){
         switch(true){
             case /INFO:.+ (Starting Knife Round)/.test(log):
+                return true;
+                break;
+        }
+        return false;
+    }
+
+    function isNewRound(log){
+        switch(true){
+            case /- Un round a été marqué -.*\((\d+)\) - \((\d+)\)/.test(log):
                 return true;
                 break;
         }
@@ -429,8 +479,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         },3000);
     }
 
-
-
     function addEventToTimeline(log){
         var time = get_time(log);
         if(time == null){
@@ -456,13 +504,3 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     }
 
 }]);
-
-app.filter('digits', function() {
-    return function(input) {
-        if (input < 10) {
-            input = '0' + input;
-        }
-
-        return input;
-    }
-});

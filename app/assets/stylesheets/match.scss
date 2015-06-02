@@ -4,11 +4,29 @@
 $ct-color: #9fcdfa;
 $t-color: #b5aa62;
 
+@media (max-width: 1024px) {
+  .match-header {
+    .teams p.terrorists, .teams p.cterrorist {
+      font-size: 1em !important;
+    }
+    .score {
+      p {
+        font-size: 2.7em !important;
+      }
+    }
+  }
+  .players {
+    li {
+      p.t, p.ct {
+        font-size: 2.5vw !important;
+      }
+    }
+  }
+}
 .match {
   margin: auto;
   text-align: center;
   .match-header {
-    background-color: #37444d;
     padding: 12px;
     position: relative;
     .match-info {
@@ -38,7 +56,9 @@ $t-color: #b5aa62;
       p {
         color: white;
         font-weight: bold;
-        font-size: 2em;
+        font-size: 4.7em;
+        margin:0;
+        padding: 0;
         &.ct-score {
           color: $ct-color;
         }
@@ -97,13 +117,23 @@ $t-color: #b5aa62;
     background-position: center;
   }
   .players {
-    margin-bottom: 20px;
+    h3{
+      font-size: 0.8em;
+      margin: 10px 0 0 0;
+      padding: 2px;
+      background-color: #202020;
+    }
     ul {
-      padding: 0;
+      background-color: #303030;
       margin: 0;
       list-style: none;
-      margin-bottom: 20px;
       &.left {
+      }
+      p.stats{
+        display: inline-block;
+        margin:0;
+        padding:0;
+        font-style: italic;
       }
       &.right {
         p {
@@ -112,7 +142,7 @@ $t-color: #b5aa62;
       }
       li {
         background-color: #464646;
-        padding: 5px;
+        padding: 2px 2px 0 2px;
         position: relative;
         &.dead {
           p {
@@ -130,7 +160,7 @@ $t-color: #b5aa62;
         p {
           color: black;
           text-align: left;
-          margin: 0 0 20px 0;
+          margin: 0 0 0px 0;
           font-size: 1em;
           padding: 5px;
           &.ct {
@@ -161,7 +191,9 @@ $t-color: #b5aa62;
       font-size: 0.7em;
     }
     img {
-      padding: 1em 0 0 0;
+      max-width: 5em;
+      text-align: center;
+      display: inline-block;
     }
   }
 
@@ -211,40 +243,40 @@ $t-color: #b5aa62;
     }
   }
 }
-.animated { 
-  -webkit-animation-duration: 0.5s; 
-  animation-duration: 0.5s; 
-  -webkit-animation-fill-mode: both; 
-  animation-fill-mode: both; 
+.animated {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;
-} 
+}
 
-@-webkit-keyframes fadeInDown { 
-  0% { 
-    opacity: 0; 
-    -webkit-transform: translateY(-20px); 
-  } 
-  100% { 
-    opacity: 1; 
-    -webkit-transform: translateY(0); 
-  } 
-} 
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+  }
+}
 
-@keyframes fadeInDown { 
-  0% { 
-    opacity: 0; 
-    transform: translateY(-20px); 
-  } 
-  100% { 
-    opacity: 1; 
-    transform: translateY(0); 
-  } 
-} 
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-.fadeInDown { 
-  -webkit-animation-name: fadeInDown; 
-  animation-name: fadeInDown; 
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
 }

@@ -13,6 +13,9 @@
 //= require angular
 //= require angular-animate
 //= require angular-resource
+//= require angular-rails-templates
+//= require_tree ./templates
+
 //= require jquery
 //= require turbolinks
 //= require foundation

@@ -11,9 +11,11 @@ class Csgotracker
 
   def start_tracking
     puts "Started Tracking ::::::::::::::::::::::::::::::::::::"
-    track
+    while !@finished
+      track
+      sleep(5.seconds)
+    end
   end
-  handle_asynchronously :start_tracking
 
   def skip_lines(line)
     return true if line == '                    </div>'
@@ -22,6 +24,7 @@ class Csgotracker
   end
 
   def track
+    puts "STARTED TRACK"
     page = request_url
     index = 0
     log(page).to_s.each_line do |line|
@@ -31,19 +34,15 @@ class Csgotracker
         time = get_time(line)
         new_event(line,time)
         @last_index = index
+
       end
       index += 1
-    end
-    unless @finished
-      puts "Sleeping 5 SEconds"
-      sleep(5.seconds)
-      track
     end
   end
 
   def new_event(log,time)
     if win_event(log)
-      @match.status = "finished"
+      @match.status = 'finished'
       @match.save!
       @finished = true;
     end
@@ -59,7 +58,7 @@ class Csgotracker
 
   def knife_start(log)
     if(log =~ /INFO:.+ (Starting Knife Round)/)
-      @match.status = "started"
+      @match.status = 'started'
       @match.save!
     end
   end
@@ -105,7 +104,7 @@ class Csgotracker
   end
 
   def request_url
-    puts "REQUESTING"
+    puts 'REQUESTING'
     return Nokogiri::HTML(open(@match.log_path))
   end
 

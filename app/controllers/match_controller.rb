@@ -4,9 +4,8 @@ class MatchController < ApplicationController
   end    
 
   def start_tracking
-    tracker = Csgotracker.new Match.find(params[:match_id])
-    tracker.start_tracking
-    redirect_to root_path 
+    CsgoWorker.perform_async(params[:match_id])
+    redirect_to match_path(params[:match_id]) 
   end
 
   def log
@@ -15,8 +14,11 @@ class MatchController < ApplicationController
     render json: match
   end
 
-  private
+  def live
+    render json: Match.live
+  end
 
+  private
   def match
     Match.find(params[:id])
   end
