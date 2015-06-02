@@ -115,7 +115,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 //console.log("ROUND WIN");
                 round_win(str);
                 break;
-            case /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+)/.test(str):
+            case /\"\>(.+)<\/font> killed .+\"\>(.+)\<\/font> with (\w+).* \(CT: (\d+) - T: (.*\d+)\)/.test(str):
                 //console.log("KILLED");
                 killed(str);
                 break;
