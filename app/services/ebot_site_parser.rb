@@ -8,6 +8,7 @@ class EbotSiteParser
   def check_all_sites
     sites = EbotSite.all
     sites.each do |site|
+      puts "Checking: #{site}"
       html = Nokogiri::HTML(open(site.url))
       parse_matches(html,site.url)
     end
@@ -62,7 +63,8 @@ class EbotSiteParser
     return unless valid_tr(cell)
     log =  log_url id(cell), site
     exists = Match.exists?(:log_path => log)
-    if !exists && status(cell) != 'Finished'
+    #Check if match don't exists and status is not finsihed or not started
+    if !exists && status(cell) != 'Finished' && status(cell) != 'Not started'
       Match.create(log_path: log,
                    team_1: team_1(cell),
                    team_2: team_2(cell),

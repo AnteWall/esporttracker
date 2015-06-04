@@ -53,6 +53,7 @@ class Csgotracker
     end
     teams_event(log)
     knife_start(log)
+    admin_stop(log)
     MatchEvent.create(match: @match, log: log, log_time: time)
   end
 
@@ -65,6 +66,12 @@ class Csgotracker
   def teams_event(log)
     if(log =~ /- Teams: (.+) - ([^<>\n]+)(<br>)*/)
       @match.set_teams($1,$2)
+    end
+  end
+
+  def admin_stop(log)
+    if(log =~ /- Match stopped by admin/)
+      @finished = true
     end
   end
 
