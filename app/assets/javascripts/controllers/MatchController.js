@@ -18,6 +18,8 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
     $scope.game_over = false;
     $scope.game_status = 'warmup';
 
+    $scope.chat_log = [];
+
     $scope.players = {};
     $scope.players.ct = [];
     $scope.players.t = [];
@@ -43,6 +45,29 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         $interval.cancel($scope.time.timeline_timer_interval);
         start_timeline_timer();
     };
+    $scope.time.nextRound = function(){
+        var notFoundNextRound = true;
+        $interval.cancel($scope.time.timeline_timer_interval);
+        while(notFoundNextRound){
+            if($scope.time.current_time <= $scope.time.end_time) {
+                var time = $filter('date')($scope.time.current_time,'yyyy-MM-dd HH:mm:ss');
+                if($scope.timeline[time] != undefined){
+                    for(var i = 0; i < $scope.timeline[time].length; i++){
+                        var ev = $scope.timeline[time][i];
+                        match_log(ev);
+                        if(isNewRound(ev)) {
+                            notFoundNextRound = false;
+                            break;
+                        }
+                    }
+                }
+                $scope.time.current_time.setSeconds($scope.time.current_time.getSeconds() + 1);
+            }else{
+                notFoundNextRound = false;
+            }
+        }
+        start_timeline_timer();
+    };
 
     $scope.initialize = function(match_id){
         $scope.match_id = match_id;
@@ -66,13 +91,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
 
     $scope.get_header_style = function(){
         return 'match-header ' + $scope.matchinfo.map;
-    };
-
-    $scope.next_round = function () {
-
-        $interval.cancel($scope.time.timeline_timer_interval);
-
-        //TODO FIX THIS
     };
 
     function pause_timer(){
@@ -119,6 +137,10 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         new_round();
     };
 
+    var addToChatLog = function (str) {
+        $scope.chat_log.push(str);
+    };
+
     function match_log(str){
         switch (true) {
             case /- Loading maps (\w+)/.test(str):
@@ -159,6 +181,7 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
                 break;
             default:
                 console.log("Didn't match anything",str);
+                addToChatLog(str);
                 break;
         }
     }
@@ -453,7 +476,6 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
             addEventToTimeline(ev.log);
             $scope.last_event = ev.id;
             if(isKnifeRound(ev.log)){
-                console.log("FOUND NIFE!");
                 playUntilLog(events,ev.log);
             }
             if(isWinEvent(ev.log)){

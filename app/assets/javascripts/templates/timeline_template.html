@@ -13,8 +13,8 @@
     <div class="small-12 medium-3 column">
         <h4>Time Controlls</h4>
 
-        <button class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Previous round" ><i class="fi-previous"></i></button>
-        <button class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Next round"><i class="fi-next"></i></button>
+        <button disabled="disabled" class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Previous round" ><i class="fi-previous"></i></button>
+        <button ng-click="time.nextRound()" class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Next round"><i class="fi-next"></i></button>
         <button ng-click="time.pauseTimer()" class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Pause"><i class="fi-pause"></i></button>
         <button ng-click="time.startTimer()" class="button tiny" data-tooltip aria-haspopup="true" class="has-tip" title="Play"><i class="fi-play"></i></button>
 
