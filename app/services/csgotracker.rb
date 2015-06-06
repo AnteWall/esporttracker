@@ -19,6 +19,7 @@ class Csgotracker
 
   def skip_lines(line)
     return true if line == '                    </div>'
+    return true if line == '</div>'
     return true if line == '<div id="logmatch">'
     return false
   end
@@ -27,7 +28,10 @@ class Csgotracker
     puts "STARTED TRACK"
     page = request_url
     index = 0
-    log(page).to_s.each_line do |line|
+    log_v = log(page)
+    puts log_v.size.inspect
+    @finished = true if log_v.size == 0 #'IF NO LOG IS PRESENT, TERMINATE'
+    log_v.to_s.each_line do |line|
       next if skip_lines(line)
       if index > @last_index
         puts line
@@ -107,7 +111,7 @@ class Csgotracker
   end
 
   def log(html)
-    return html.css('#logmatch') 
+    html.css('#logmatch')
   end
 
   def request_url

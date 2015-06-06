@@ -65,11 +65,12 @@ class EbotSiteParser
     exists = Match.exists?(:log_path => log)
     #Check if match don't exists and status is not finsihed or not started
     if !exists && status(cell) != 'Finished' && status(cell) != 'Not started'
-      Match.create(log_path: log,
+      match = Match.create(log_path: log,
                    team_1: team_1(cell),
                    team_2: team_2(cell),
                    tournament: tournament(cell),
                    status: 'upcoming')
+      match.start_tracking
     end
   end
 

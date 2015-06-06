@@ -141,8 +141,22 @@ app.controller('MatchCtrl',['$scope','$filter','$http','$timeout','$interval',fu
         $scope.chat_log.push(str);
     };
 
+    var pause_match = function () {
+        $scope.game_status = 'paused';
+    };
+
+    var unpause_match = function () {
+        $scope.game_status = 'game';
+    };
+
     function match_log(str){
         switch (true) {
+            case /- Unpausing match/.test(str):
+                unpause_match();
+                break;
+            case /- Pausing match/.test(str):
+                pause_match();
+                break;
             case /- Loading maps (\w+)/.test(str):
                 //console.log("LOAD MAP");
                 load_map(str);

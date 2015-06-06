@@ -25,4 +25,8 @@ class Match < ActiveRecord::Base
     self.save!
   end
 
+  def start_tracking
+    CsgoWorker.perform_async(self.id)
+  end
+
 end
