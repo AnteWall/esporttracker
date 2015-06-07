@@ -22,13 +22,12 @@ test:
 
 production:
   adapter: postgresql
-  database: livecsgo
-  host: web398.webfaction.com
+  host: <%= ENV['PG_HOST'] %>
+  database: <%= ENV['PG_DATABASE'] %>
   encoding: unicode
-  username: ante
-  password: ante2235
+  username: <%= ENV['PG_USER'] %>
+  password: <%= ENV['PG_PASS'] %>
   pool: 5
-  timeout: 5000
   port: 5432
 
 
