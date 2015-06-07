@@ -10,11 +10,12 @@ class Csgotracker
   end
 
   def start_tracking
-    puts "Started Tracking ::::::::::::::::::::::::::::::::::::"
+    puts "Starting match: #{@match.id}"
     while !@finished
       track
       sleep(5.seconds)
     end
+    puts "Ending match: #{@match.id}"
   end
 
   def skip_lines(line)
@@ -30,11 +31,14 @@ class Csgotracker
     index = 0
     log_v = log(page)
     puts log_v.size.inspect
-    @finished = true if log_v.size == 0 #'IF NO LOG IS PRESENT, TERMINATE'
+    if log_v.size == 0
+      @finished = true
+      puts "FINISGHED BEACUSE LOG_V SIZE == 0"
+    end
     log_v.to_s.each_line do |line|
       next if skip_lines(line)
       if index > @last_index
-        puts line
+        #puts line
         time = get_time(line)
         new_event(line,time)
         @last_index = index
@@ -48,7 +52,8 @@ class Csgotracker
     if win_event(log)
       @match.status = 'finished'
       @match.save!
-      @finished = true;
+      @finished = true
+      puts "FINISHED BEACUSE WIN EVENT"
     end
     if round_win_event(log)
       puts "#"*20
@@ -76,6 +81,9 @@ class Csgotracker
   def admin_stop(log)
     if(log =~ /- Match stopped by admin/)
       @finished = true
+      @match.status = 'stopped'
+      @match.save!
+      puts "FINISHED BEACUSE ADMIN STOP"
     end
   end
 
