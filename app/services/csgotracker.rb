@@ -80,10 +80,10 @@ class Csgotracker
 
   def admin_stop(log)
     if(log =~ /- Match stopped by admin/)
-      @finished = true
-      @match.status = 'stopped'
-      @match.save!
-      puts "FINISHED BEACUSE ADMIN STOP"
+      #@finished = true
+      #@match.status = 'stopped'
+      #@match.save!
+      #puts "FINISHED BEACUSE ADMIN STOP"
     end
   end
 
