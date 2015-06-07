@@ -1,101 +1,106 @@
 <div class="row" ng-controller="CSGOLiveCtrl">
-    <div class="small-12 column subject-bar ">
-        <h2 class="small-8 column"><div class="live-dot"></div> Live Games</h2>
-        <p>Live Update</p>
-        <fieldset class="switch" tabindex="0">
-            <input id="exampleCheckboxSwitch4" type="checkbox" ng-model="live_update">
-            <label for="exampleCheckboxSwitch4">Live update</label>
-        </fieldset>
+  <div class="small-12 column subject-bar ">
+    <h2 class="small-8 column"><div class="live-dot"></div> Live Games</h2>
+    <p>Live Update</p>
+    <fieldset class="switch" tabindex="0">
+      <input id="exampleCheckboxSwitch4" type="checkbox" ng-model="live_update">
+      <label for="exampleCheckboxSwitch4">Live update</label>
+    </fieldset>
+  </div>
+  <div ng-repeat="match in matches" class="match-overview large-6 columns" ng-class="match.map">
+    <a ng-href="/match/{{match.id}}" target="_self"></a>
+    <div class="row">
+      <div class="small-12 columns tournament">{{ match.tournament }}</div>
+      <div class="small-4 columns">
+        <div class="team-1">{{ match.team_1 }}</div>
+        <div class="team-1 score">{{ match.team_1_score }}</div>
+      </div>
+      <div class="small-4 columns versus">vs</div>
+      <div class="small-4 columns">
+        <div class="team-2">{{ match.team_2 }}</div>
+        <div class="team-2 score">{{ match.team_2_score }}</div>
+      </div>
     </div>
-    <div ng-repeat="match in matches" class="match-overview large-6 columns map_de_dust2">
-        <a ng-href="/match/{{match.id}}" target="_self"></a>
-        <div class="row">
-            <div class="small-4 columns team-1">{{ match.team_1 }}</div>
-            <div class="small-4 columns versus">vs</div>
-            <div class="small-4 columns team-2">{{ match.team_2 }}</div>
-        </div>
-        <div class="row">
-            <div class="small-4 columns team-1">{{ match.team_1_score }}</div>
-            <div class="small-4 columns team-2">{{ match.team_2_score }}</div>
-        </div>
+    <div class="row">
+    </div>
 
-    </div>
-    <div ng-show="matches.length == 0" class="large-12 columns match-overview">
-        <p class="no-live">No live matches right now, check back later.</p>
-    </div>
+  </div>
+  <div ng-show="matches.length == 0" class="large-12 columns match-overview">
+    <p class="no-live">No live matches right now, check back later.</p>
+  </div>
 </div>
 
 <div class="row">
-    <div class="small-12 column subject-bar ">
-        <h2>Upcoming Matches</h2>
-    </div>
-    <table class="match-overview-table">
-        <thead>
-        <% if @matches.upcoming.count == 0 %>
-            <tr>
-                <th>No upcoming matches...</th>
-            </tr>
-        <% else %>
-            <tr>
-                <th>Teams</th>
-                <th>Tournament</th>
-
-                <th width="150">Map</th>
-            </tr>
-        <% end %>
-        </thead>
-
-        <tbody>
-        <% @matches.upcoming.each do |match| %>
-            <tr onclick="location.href='<%= match_path(match) %>'">
-                <td>
-                    <p class="team-1"><%= match.team_1 %></p>
-                    <p class="versus">vs</p>
-                    <p class="team-2"><%= match.team_2 %></p>
-                </td>
-                <td><p><%= match.tournament %></p></td>
-                <td><p>de_dust2</p></td>
-            </tr>
-        <% end %>
-
-        </tbody>
-    </table>
-</div>
-
-
-<div class="row">
-    <div class="small-12 column subject-bar ">
-        <h2>Finsihed Matches</h2>
-    </div>
-    <table class="match-overview-table">
-        <thead>
+  <div class="small-12 column subject-bar ">
+    <h2>Upcoming Matches</h2>
+  </div>
+  <table class="match-overview-table">
+    <thead>
+      <% if @matches.upcoming.count == 0 %>
         <tr>
-            <th>Teams</th>
-            <th>Tournament</th>
+        <th>No upcoming matches...</th>
+      </tr>
+    <% else %>
+        <tr>
+        <th>Teams</th>
+        <th>Tournament</th>
 
-            <th width="150">Map</th>
-            <th width="150">Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @matches.finished.limit(10).each do |match| %>
-            <tr onclick="location.href='<%= match_path(match) %>'">
-                <td>
-                    <p class="team-1"><%= match.team_1 %></p>
-                    <p class="versus">vs</p>
-                    <p class="team-2"><%= match.team_2 %></p>
-                </td>
-                <td><p><%= match.tournament %></p></td>
-                <td><p>de_dust2</p></td>
-                <td>
-                    <p class="team-1"><%= match.team_1_score %></p>
-                    <p>-</p>
-                    <p class="team-2"><%= match.team_2_score %></p>
-                </td>
-            </tr>
-        <% end %>
+        <th width="150">Map</th>
+      </tr>
+    <% end %>
+    </thead>
+
+    <tbody>
+    <% @matches.upcoming.each do |match| %>
+      <tr onclick="location.href='<%= match_path(match) %>'">
+      <td>
+        <p class="team-1"><%= match.team_1 %></p>
+        <p class="versus">vs</p>
+        <p class="team-2"><%= match.team_2 %></p>
+      </td>
+      <td><p><%= match.tournament %></p></td>
+      <td><p><%= match.map %></p></td>
+    </tr>
+  <% end %>
+
+    </tbody>
+  </table>
+</div>
 
 
-        </tbody>
-    </table>
+<div class="row">
+  <div class="small-12 column subject-bar ">
+    <h2>Finsihed Matches</h2>
+  </div>
+  <table class="match-overview-table">
+    <thead>
+      <tr>
+        <th>Teams</th>
+        <th>Tournament</th>
+
+        <th width="150">Map</th>
+        <th width="150">Score</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @matches.finished.limit(10).each do |match| %>
+      <tr onclick="location.href='<%= match_path(match) %>'">
+      <td>
+        <p class="team-1"><%= match.team_1 %></p>
+        <p class="versus">vs</p>
+        <p class="team-2"><%= match.team_2 %></p>
+      </td>
+      <td><p><%= match.tournament %></p></td>
+      <td><p>de_dust2</p></td>
+      <td>
+        <p class="team-1"><%= match.team_1_score %></p>
+        <p>-</p>
+        <p class="team-2"><%= match.team_2_score %></p>
+      </td>
+    </tr>
+  <% end %>
+
+
+    </tbody>
+  </table>
 </div>

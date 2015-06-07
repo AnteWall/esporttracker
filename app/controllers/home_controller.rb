@@ -4,7 +4,8 @@ class HomeController < ApplicationController
   end
 
   def test
-    CsgoMatchWorker.perform_async
+    #CsgoMatchWorker.perform_async
+    EbotSiteParser.new.check_all_sites
     render :text => 'LOLa'
   end
 end

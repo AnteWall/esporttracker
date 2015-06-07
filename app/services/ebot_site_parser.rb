@@ -47,6 +47,11 @@ class EbotSiteParser
     match[3].content.strip
   end
 
+  def map(cell)
+    match = cell.css('td')
+    match[4].content.strip
+  end
+
   def valid_tr(cell)
     match = cell.css('font')
     if match[0].nil? || match[3].nil?
@@ -69,7 +74,8 @@ class EbotSiteParser
                    team_1: team_1(cell),
                    team_2: team_2(cell),
                    tournament: tournament(cell),
-                   status: 'upcoming')
+                   status: 'upcoming',
+                   map: map(cell))
       match.start_tracking
     end
   end

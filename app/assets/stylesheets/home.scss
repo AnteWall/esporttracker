@@ -5,7 +5,6 @@ $ct-color: #9fcdfa;
 $t-color: #b5aa62;
 
 .match-overview{
-  padding: 10px;
   font-weight: bold;
   text-align: center;
   position: relative;
@@ -23,6 +22,18 @@ $t-color: #b5aa62;
     height: 100%;
   }
   .versus{
+    font-size:3em;
+    margin: 0;
+    padding: 0;
+  }
+  .tournament{
+
+    background: rgba(0,0,0,.7);
+    padding: 6px;
+    margin: 0 0 10px 0;
+  }
+  .score{
+    font-size:2em;
   }
   .team-1{
     color: $ct-color;
