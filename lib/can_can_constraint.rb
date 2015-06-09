@@ -1,7 +1,5 @@
 class CanCanConstraint
   def initialize(action, resource)
-    puts "#"*100
-    puts "HERE!!!"
     @action = action
     @resource = resource
   end
