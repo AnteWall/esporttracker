@@ -39,3 +39,6 @@ gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
 gem 'daemons'
 gem 'rails_12factor', group: :production #Heroku Logs
+
+gem 'devise'
+gem 'cancancan'
